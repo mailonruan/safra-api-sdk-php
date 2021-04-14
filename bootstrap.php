@@ -2,4 +2,6 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
-$router = new AditumPayments\Router;
+$payment = new AditumPayments\Payment;
+
+$payment->getToken();
