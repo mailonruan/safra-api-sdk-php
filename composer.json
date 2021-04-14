@@ -1,0 +1,17 @@
+{
+    "name": "aditum-payments/aditum-api-sdk-php",
+    "authors": [
+        {
+            "name": "Nibble One",
+            "email": "jackson.garcia@nibbleone.com.br"
+        }
+    ],
+    "require": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "AditumPayments\\": "src"
+        }
+    }
+}
