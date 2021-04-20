@@ -4,6 +4,9 @@ require __DIR__ . '/vendor/autoload.php';
 
 $auth = new AditumPayments\Authentication;
 $config = new AditumPayments\Configuration;
+$pay = AditumPayments\Payment::getInstance(array(
+    "url" =>  $config->getDevURL(),
+));
 
 // $config->setCustomerName("ceres");
 // $config->setCustomerEmail("ceres@aditum.co");
@@ -47,9 +50,6 @@ $config = new AditumPayments\Configuration;
 //     "amount" => 100,
 // );
 
-// $pay = AditumPayments\Payment::getInstance(array(
-//     "url" =>  $config->getDevURL(),
-// ));
 //$pay->authorization($data, $callback2);
 
 // $callback3 = function($err, $data) : void {
