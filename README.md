@@ -11,7 +11,7 @@ Toda a implementação foi baseada na documentação da **Aditum**, pelo link  [
 
 ## Configuration
 
-Dentro dessa podemos obter informações com url de desenvolvimento e produção.
+Dentro dessa classe podemos obter informações como a url de desenvolvimento e produção.
 
 ## Status da transação
 ```php
