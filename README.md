@@ -1,4 +1,4 @@
-# Gateway API Api Aditum
+# Gateway Api Aditum
 
 Implementação em php da integração do gateway da api de pagamento da **Aditum**. Facilitando o desenvolvimento, sem precisar do entendimento das regras de negócio para fazer uso da api.
 
