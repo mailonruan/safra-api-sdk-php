@@ -13,14 +13,6 @@ Toda a implementação foi baseada na documentação da **Aditum**, pelo link  [
 
 Dentro dessa classe podemos obter informações como a url de desenvolvimento e produção.
 
-### getUrl():
-Retorna a `url` defina pelo usuário, se não estiver definida é retornado a url de produção.
-```php
-$config = AditumPayments\ApiSDK\Configuration::getInstance();
-echo $config->getUrl();
-
-```
-
 ### setUrl():
 Grava a `url` defina pelo usuário.
 ```php
@@ -29,7 +21,15 @@ echo $config->setUrl();
 
 ```
 
-### getProdUrl():
+### getUrl() : string
+Retorna a `url` defina pelo usuário, se não estiver definida é retornado a url de produção.
+```php
+$config = AditumPayments\ApiSDK\Configuration::getInstance();
+echo $config->getUrl();
+
+```
+
+### getProdUrl() : string
 Retorna a `url` de produção.
 ```php
 $config = AditumPayments\ApiSDK\Configuration::getInstance();
@@ -37,7 +37,7 @@ echo $config->getProdUrl();
 
 ```
 
-### getDevUrl():
+### getDevUrl() : string
 Retorna a `url` de desenvolvimento.
 ```php
 $config = AditumPayments\ApiSDK\Configuration::getInstance();
@@ -45,7 +45,7 @@ echo $config->getDevUrl();
 
 ```
 
-### setToken($token):
+### setToken($token) 
 Grava o `token` para ser usado em futuras requisições.
 ```php
 $config = AditumPayments\ApiSDK\Configuration::getInstance();
@@ -53,7 +53,7 @@ $config->setToken('1413413513564t32fg3g3g');
 
 ```
 
-### getToken():
+### getToken() : string
 Retorna o `token` gravado.
 ```php
 $config = AditumPayments\ApiSDK\Configuration::getInstance();
@@ -61,7 +61,7 @@ echo $config->getToken();
 
 ```
 
-### setCustomerName($name):
+### setCustomerName($name)
 Grava o `name` para ser usado em futuras requisições.
 ```php
 $config = AditumPayments\ApiSDK\Configuration::getInstance();
@@ -69,7 +69,7 @@ $config->setCustomerName('ceres');
 
 ```
 
-### getCustomerName():
+### getCustomerName() : string
 Retorna o `name` gravado.
 ```php
 $config = AditumPayments\ApiSDK\Configuration::getInstance();
@@ -77,7 +77,7 @@ echo $config->getCustomerName();
 
 ```
 
-### setCustomerEmail($email):
+### setCustomerEmail($email)
 Grava o `email` para ser usado em futuras requisições.
 ```php
 $config = AditumPayments\ApiSDK\Configuration::getInstance();
@@ -85,7 +85,7 @@ $config->setCustomerEmail('ceres');
 
 ```
 
-### getCustomerEmail():
+### getCustomerEmail() : string
 Retorna o `email` gravado.
 ```php
 $config = AditumPayments\ApiSDK\Configuration::getInstance();
@@ -93,7 +93,7 @@ echo $config->getCustomerEmail();
 
 ```
 
-### setCnpj($cnpj):
+### setCnpj($cnpj)
 Grava o `cnpj` do estabelecimento.
 ```php
 $config = AditumPayments\ApiSDK\Configuration::getInstance();
@@ -101,7 +101,7 @@ $config->setCnpj('3141413441341341341');
 
 ```
 
-### getCnpj():
+### getCnpj() : string
 Retorna o `cnpj` gravado.
 ```php
 $config = AditumPayments\ApiSDK\Configuration::getInstance();
@@ -109,7 +109,7 @@ echo $config->getCnpj();
 
 ```
 
-### setMerchantToken($merchantToken):
+### setMerchantToken($merchantToken)
 Grava o `merchantToken` do estabelecimento.
 ```php
 $config = AditumPayments\ApiSDK\Configuration::getInstance();
@@ -117,7 +117,7 @@ $config->setMerchantToken('41341341341');
 
 ```
 
-### getMerchantToken():
+### getMerchantToken() : string
 Retorna o `merchantToken` gravado.
 ```php
 $config = AditumPayments\ApiSDK\Configuration::getInstance();
@@ -128,7 +128,7 @@ echo $config->getMerchantToken();
 # Authentication
 
 
-### requestToken(callback`(opcional)`):
+### requestToken(callback`(opcional)`) : array()
 Retorna o `token` necessário para conseguir se comunicar com a api da **Aditum**.
 
 **Uso de callback:**
@@ -151,7 +151,7 @@ $callback1 = function($err, $token, $refreshToken) : void {
 
 $auth->requestToken($callback1);
 ```
-**Uso de retorno de função**
+**Uso de retorno da função**
 ```php
 $auth = new AditumPayments\ApiSDK\Authentication;
 
@@ -231,7 +231,7 @@ AditumPayments\ApiSDK\Payment::CARD_BRAND_REDE_COMPRAS;
 
 #
 
-### authorization(object`(Transaction)`,  callback`(opcional)`):
+### authorization(object`(Transaction)`,  callback`(opcional)`) : array()
 Retorna o `token` necessário para conseguir se comunicar com a api da **Aditum**.			      |
 
 **Uso de callback:**
@@ -263,7 +263,7 @@ if ($err == NULL) {
 $pay->authorization($data, $callback2);
 ```
 
-**Uso de retorno de função**
+**Uso de retorno da função**
 ```php
 $pay = AditumPayments\ApiSDK\Payment;
 
