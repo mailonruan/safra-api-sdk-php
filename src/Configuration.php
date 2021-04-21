@@ -3,52 +3,53 @@
 namespace AditumPayments\ApiSDK;
 
 class Configuration {
-    private $fileName = "config.json";
+    private $urlProd = "https://payment.aditum.com.br/v2/";
+    private $urlDev = "https://payment-dev.aditum.com.br/v2/";
+    private $token = "";
+    private $customerName = "";
+    private $customerEmail = "";
+    
+    public static $instance;
+
+    private function __construct() {}
+
+    public static function getInstance($params = NULL) {
+        if (!isset(self::$instance)) {
+            self::$instance = new Configuration;
+        }
+
+        return self::$instance;
+    }
 
     public function getProdURL() {
-        $json = file_get_contents($this->fileName);
-        $data = json_decode($json);
-
-        return $data->urlProd;
+        return $this->urlProd;
     }
 
     public function getDevURL() {
-        $json = file_get_contents($this->fileName);
-        $data = json_decode($json);
-
-        return $data->urlDev;
+        return $this->urlDev;
     }
 
     public function setToken($token) {
-        $json = json_decode(file_get_contents($this->fileName));
-        $json->token = $token;
-        $json_editado = file_put_contents($this->fileName,json_encode($json));
+        $this->token = $token;
     }
 
     public function getToken() {
-        $json = json_decode(file_get_contents($this->fileName));
-        return $json->token;
+        return $this->token;
     }
 
     public function setCustomerName($customerName) {
-        $json = json_decode(file_get_contents($this->fileName));
-        $json->customerName = $customerName;
-        $json_editado = file_put_contents($this->fileName,json_encode($json)); 
+        $this->customerName = $customerName;
     }
 
     public function getCustomerName() {
-        $json = json_decode(file_get_contents($this->fileName));
-        return $json->customerName;
+        return $this->customerName;
     }
 
     public function setCustomerEmail($customerEmail) {
-        $json = json_decode(file_get_contents($this->fileName));
-        $json->customerEmail = $customerEmail;
-        $json_editado = file_put_contents($this->fileName,json_encode($json)); 
+        $this->customerEmail = $customerEmail;
     }
 
     public function getCustomerEmail() {
-        $json = json_decode(file_get_contents($this->fileName));
-        return $json->customerEmail;
+        return $this->customerEmail;
     }
 }

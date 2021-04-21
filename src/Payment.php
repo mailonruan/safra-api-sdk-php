@@ -9,8 +9,6 @@ class Payment {
     private $customerName = NULL;
     private $customerEmail = NULL;
 
-    public static $instance;
-
     // Charge status
     public const CHARGE_STATUS_AUTHORIZED         = "Authorized";
     public const CHARGE_STATUS_PRE_AUTHORIZED     = "PreAuthorized";
@@ -59,6 +57,8 @@ class Payment {
     public const CARD_BRAND_BIGCARD        = "Bigcard";
     public const CARD_BRAND_BEN            = "Ben";
     public const CARD_BRAND_REDE_COMPRAS   = "RedeCompras";
+
+    public static $instance;
 
     private function __construct() {}
 
@@ -215,7 +215,7 @@ class Payment {
 
     private function getUrl() {
         if ($this->url == NULL) {
-            $config = new Configuration;
+            $config = Configuration::getInstance();
             return $config->getProdURL();
         }
 
@@ -224,7 +224,7 @@ class Payment {
 
     private function getToken() {
         if ($this->token == NULL) {
-            $config = new Configuration;
+            $config = Configuration::getInstance();
             return $config->getToken();
         }
 
@@ -233,7 +233,7 @@ class Payment {
 
     private function getCustomerName() {
         if ($this->customerName == NULL) {
-            $config = new Configuration;
+            $config = Configuration::getInstance();
             return $config->getCustomerName();
         }
 
@@ -242,7 +242,7 @@ class Payment {
 
     private function getCustomerEmail() {
         if ($this->customerEmail == NULL) {
-            $config = new Configuration;
+            $config = Configuration::getInstance();
             return $config->getCustomerEmail();
         }
 
