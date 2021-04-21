@@ -3,63 +3,87 @@
 require __DIR__ . '/vendor/autoload.php';
 
 $auth = new AditumPayments\ApiSDK\Authentication;
+$pay = new AditumPayments\ApiSDK\Payment;
 $config = AditumPayments\ApiSDK\Configuration::getInstance();
-$pay = AditumPayments\ApiSDK\Payment::getInstance(array(
-    "url" =>  $config->getDevURL(),
-));
 
-// $config->setCustomerName("ceres");
-// $config->setCustomerEmail("ceres@aditum.co");
+/*
+// ----------------------------------------------------CONFIGURAÇÃO -------------------------------------------------------
+$config->setUrl($config->getDevUrl()); // Caso não defina a url, será usada de produção
+$config->setCustomerName("ceres");
+$config->setCustomerEmail("ceres@aditum.co");
+$config->setCnpj("83032272000109");
+$config->setMerchantToken("mk_P1kT7Rngif1Xuylw0z96k3");
 
-// $callback1 = function($err, $token, $refreshToken) : void {
-//     if ($err == NULL) {
-//         // echo $token;
-//         $config = AditumPayments\ApiSDK\Configuration::getInstance();
-//         $config->setToken($token);
+// ----------------------------------------------------AUTENTICAÇÃO --------------------------------------------------------
+// Uso de callback
+$callback1 = function($err, $token, $refreshToken) : void {
+    if ($err == NULL) {
+        echo $token."\n";
+        $config = AditumPayments\ApiSDK\Configuration::getInstance();
+        $config->setToken($token);
 
-//     } else {
-//         echo 'httStatus: '.$err["httpStatus"].' httpMsg: '.$err["httpMsg"].' code: '.$err['code'].' msg:'.$err['msg'];
-//     }
-// };
+    } else {
+        echo "httStatus: ".$err["httpStatus"]
+            ."\nhttpMsg: ".$err["httpMsg"]
+            ."\ncode: ".$err['code']
+            ."\nmsg: ".$err['msg']
+            ."\n";
+    }
+};
 
-// $data = array(
-//     "url" => $config->getDevURL(),
-//     "cnpj" => "83032272000109",
-//     "merchantToken" => "mk_P1kT7Rngif1Xuylw0z96k3"
-// );
+$auth->requestToken($callback1);
 
-// $auth->requestToken($data, $callback1);
+// Retorno de função
+$res = $auth->requestToken();
 
-// $callback2 = function($err, $chargeStatus, $data) : void {
-//     if ($err == NULL) {
-//         if ($chargeStatus == AditumPayments\ApiSDK\Payment::CHARGE_STATUS_AUTHORIZED) echo "Aprovado!";
+if (isset($res["token"])) {
+    echo $res["token"]."\n";
 
-//     } else {
-//         echo 'httStatus: '.$err["httpStatus"].' httpMsg: '.$err["httpMsg"].' code: '.$err['code'].' msg:'.$err['msg'];
-//     }
-// };
+} else {
+    echo "httStatus: ".$res["httpStatus"]
+    ."\n httpMsg: ".$res["httpMsg"]
+    ."\n code: ".$res['code']
+    ."\n msg:".$res['msg']
+    ."\n";
+}
 
-// $data = array(
-//     "cardNumber" => "5463373320417272",
-//     "cvv" => "879",
-//     "brandName" => $pay::CARD_BRAND_MASTER_CARD,
-//     "cardholderName" => "CERES ROHANA",
-//     "expirationMonth" => 10,
-//     "expirationYear" => 2022,
-//     "paymentType" => $pay::PAYMENT_TYPE_CREDIT,
-//     "amount" => 100,
-// );
+// --------------------------------------------------AUTORIZAÇÃO-------------------------------------------------------------
 
-// $pay->authorization($data, $callback2);
+$data = new AditumPayments\ApiSDK\Transaction;
+$data->setCardNumber("5463373320417272");
+$data->setCVV("879");
+$data->setCardholderName("CERES ROHANA");
+$data->setExpirationMonth(10);
+$data->setExpirationYear(2022);
+$data->setAmount(100);
+$data->setPaymentType($pay::PAYMENT_TYPE_CREDIT);
 
-// $callback3 = function($err, $data) : void {
-//     if ($err == NULL) {
-//         echo $data;
+// Uso de callback
+$callback2 = function($err, $chargeStatus, $data) : void {
+    if ($err == NULL) {
+        if ($chargeStatus == AditumPayments\ApiSDK\Payment::CHARGE_STATUS_AUTHORIZED) echo "Aprovado!\n";
 
-//     } else {
-//         echo 'httStatus: '.$err["httpStatus"].' httpMsg: '.$err["httpMsg"].' code: '.$err['code'].' msg:'.$err['msg'];
-//     }
-// };
+    } else {
+        echo "httStatus: ".$err["httpStatus"]
+            ."\n httpMsg: ".$err["httpMsg"]
+            ."\n code: ".$err['code']
+            ."\n msg:".$err['msg']
+            ."\n";
+    }
+};
 
-// $url = "https://portal-dev.aditum.com.br/v1/";
-// $pay->getBrandCardBin($url, "5162", $callback3);
+$pay->authorization($data, $callback2);
+
+// Retorno de função
+$res = $pay->authorization($data);
+
+if (isset($res["status"])) {
+    if ($res["status"] == $pay::CHARGE_STATUS_AUTHORIZED) echo "Aprovado!\n";
+} else {
+    echo "httStatus: ".$res["httpStatus"]
+    ."\n httpMsg: ".$res["httpMsg"]
+    ."\n code: ".$res['code']
+    ."\n msg:".$res['msg']
+    ."\n";
+}
+*/

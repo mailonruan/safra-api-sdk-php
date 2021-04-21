@@ -4,10 +4,7 @@ namespace AditumPayments\ApiSDK;
 
 class Payment {
 
-    private $token = NULL;
-    private $url = NULL;
-    private $customerName = NULL;
-    private $customerEmail = NULL;
+    private $config;
 
     // Charge status
     public const CHARGE_STATUS_AUTHORIZED         = "Authorized";
@@ -58,64 +55,23 @@ class Payment {
     public const CARD_BRAND_BEN            = "Ben";
     public const CARD_BRAND_REDE_COMPRAS   = "RedeCompras";
 
-    public static $instance;
-
-    private function __construct() {}
-
-    public static function getInstance($params = NULL) {
-        if (!isset(self::$instance)) {
-            self::$instance = new Payment;
-            if ($params != NULL) {
-                if (isset($params['token']))
-                    self::$instance->token = $params['token'];
-                if (isset($params['url']))
-                    self::$instance->url = $params['url'];
-                if (isset($params['customerName']))
-                    self::$instance->customerName = $params['customerName'];
-                if (isset($params['customerEmail']))
-                    self::$instance->customerName = $params['customerEmail'];
-            }
-        }
-
-        return self::$instance;
+    public function __construct($objectConfig = NULL) {
+        $this->config = ($objectConfig) ? $objectConfig : Configuration::getInstance();
     }
 
-    public function authorization($params, $callBack) {
+    public function authorization($data, ...$callBack) {
         $ch = curl_init();
 
         curl_setopt_array($ch, [
             CURLOPT_POST => 1,
-            CURLOPT_URL => "{$this->getUrl()}charge/authorization",
+            CURLOPT_URL => "{$this->config->getUrl()}charge/authorization",
             CURLOPT_HTTPHEADER => [
                 "Content-Type: application/json",
-                "Authorization: Bearer {$this->getToken()}"
+                "Authorization: Bearer {$this->config->getToken()}"
             ],
             CURLOPT_TIMEOUT => 30,
             CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_POSTFIELDS => json_encode(array(
-                "charge" => array(
-                    "customer" => array(
-                        "name" => $this->getCustomerName(),
-                        "email" => $this->getCustomerEmail()
-                    ),
-                    "transactions" => [
-                        array(
-                            "card" => array(
-                                "cardNumber" => $params["cardNumber"],
-                                "cvv" => $params["cvv"],
-                                "brandName" => $params["brandName"],
-                                "cardholderName" => $params["cardholderName"],
-                                "expirationMonth" => $params["expirationMonth"],
-                                "expirationYear" => $params["expirationYear"]
-                            ),
-                            "paymentType" => $params["paymentType"],
-                            "amount" => $params["amount"],
-                            "softDescriptor" => "TST003",
-                            "merchantTransactionId" => "TST003"
-                        ),
-                    ]
-                ),
-            ))
+            CURLOPT_POSTFIELDS => $data->toJson()
         ]);
 
         $response = curl_exec($ch);
@@ -124,15 +80,16 @@ class Payment {
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if($errMsg || $errCode || empty($response) ||  (($httpCode != 200) && ($httpCode != 201))) {
-            var_dump($errCode);
             curl_close($ch);
-            $callBack(array(
+            $arrayError = array(
                 "httpStatus" => $httpCode, 
                 "httpMsg" => $response, 
                 "code" => $errCode, 
-                "msg" => $errMsg), 
-                NULL, NULL);
-            return;
+                "msg" => $errMsg);
+
+            if (count($callBack)) $callBack[0]($arrayError, NULL, NULL);
+            
+            return $arrayError;
         }
 
         curl_close($ch);
@@ -140,12 +97,16 @@ class Payment {
         $responseJson = json_decode($response);
 
         if ($responseJson->success != true) {
-            curl_close($ch);
-            $callBack(array("code" => '-1', "httpMsg" => $responseJson->errors), NULL, NULL);
-            return;
+            $arrayError = array("code" => '-1', "httpMsg" => $responseJson->errors);
+            if (count($callBack)) $callBack[0]($arrayError, NULL, NULL); 
+            return $arrayError;
         }
 
-        $callBack(NULL, $responseJson->charge->chargeStatus,  $responseJson->charge);
+        if (count($callBack)) {
+            $callBack[0](NULL, $responseJson->charge->chargeStatus,  $responseJson->charge);
+        }
+
+        return array("status" => $responseJson->charge->chargeStatus, "charge" => $responseJson->charge);
     }
 
     // @TODO: A desenvolver
@@ -154,98 +115,4 @@ class Payment {
     // @TODO: A desenvolver
     public function checkoutByLink() {}
 
-    public function getBrandCardBin(...$args) {
-        $url = NULL;
-        $bin = NULL;
-        $callBack = NULL;
-
-        $count = 0;
-
-        if (count($args) == 3) {
-            $url = $args[$count];
-            $count++;
-        } else {
-            $url =  $this->getUrl();
-        }
-
-        $bin = $args[$count];
-        $callBack = $args[$count + 1];
-
-        $ch = curl_init();
-
-        curl_setopt_array($ch, [
-            CURLOPT_URL => "{$url}card/bin/brand/{$bin}",
-            CURLOPT_HTTPHEADER => [
-                "Content-Type: application/json",
-                "Authorization: Bearer {$this->getToken()}"
-            ],
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_RETURNTRANSFER => 1,
-        ]);
-
-        $response = curl_exec($ch);
-        $errMsg = curl_error($ch);
-        $errCode = curl_errno($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-        if($errMsg || $errCode || empty($response) ||  (($httpCode != 200) && ($httpCode != 201))) {
-            var_dump($errCode);
-            curl_close($ch);
-            $callBack(array(
-                "httpStatus" => $httpCode, 
-                "httpMsg" => $response, 
-                "code" => $errCode, 
-                "msg" => $errMsg), 
-                NULL);
-            return;
-        }
-
-        curl_close($ch);
-
-        $responseJson = json_decode($response);
-
-        if ($responseJson->success != true) {
-            curl_close($ch);
-            $callBack(array("code" => '-1', "httpMsg" => $responseJson->errors), NULL);
-            return;
-        }
-
-        $callBack(NULL, $responseJson->cardBrand);
-    }
-
-    private function getUrl() {
-        if ($this->url == NULL) {
-            $config = Configuration::getInstance();
-            return $config->getProdURL();
-        }
-
-        return $this->url;
-    }
-
-    private function getToken() {
-        if ($this->token == NULL) {
-            $config = Configuration::getInstance();
-            return $config->getToken();
-        }
-
-        return $this->token;
-    }
-
-    private function getCustomerName() {
-        if ($this->customerName == NULL) {
-            $config = Configuration::getInstance();
-            return $config->getCustomerName();
-        }
-
-        return $this->customerName;
-    }
-
-    private function getCustomerEmail() {
-        if ($this->customerEmail == NULL) {
-            $config = Configuration::getInstance();
-            return $config->getCustomerEmail();
-        }
-
-        return $this->customerEmail;
-    }
 }

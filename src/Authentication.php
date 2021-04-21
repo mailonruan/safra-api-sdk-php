@@ -3,8 +3,14 @@
 namespace AditumPayments\ApiSDK;
 
 class Authentication {
-    public function requestToken($params, $callBack) {
-        $merchantCredential = password_hash($params["cnpj"]."".$params["merchantToken"], PASSWORD_BCRYPT, [
+    private $config;
+
+    public function __construct($objectConfig = NULL) {
+        $this->config = ($objectConfig) ? $objectConfig : Configuration::getInstance();
+    }
+
+    public function requestToken(...$callBack) {
+        $merchantCredential = password_hash($this->config->getCnpj()."".$this->config->getMerchantToken(), PASSWORD_BCRYPT, [
             'cost' => 12,
         ]);
 
@@ -12,10 +18,10 @@ class Authentication {
 
         curl_setopt_array($ch, [
             CURLOPT_POST => 1,
-            CURLOPT_URL => "{$params['url']}merchant/auth",
+            CURLOPT_URL => "{$this->config->getUrl()}merchant/auth",
             CURLOPT_HTTPHEADER => [
                 "Authorization: {$merchantCredential}",
-                "merchantCredential: {$params['cnpj']}"
+                "merchantCredential: {$this->config->getCnpj()}"
             ],
             CURLOPT_TIMEOUT => 30,
             CURLOPT_RETURNTRANSFER => 1,
@@ -26,16 +32,17 @@ class Authentication {
         $errCode = curl_errno($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        if($errMsg || $errCode || empty($response) || (($httpCode != 200) && ($httpCode != 201))) {
-            var_dump($errCode);
+        if($errMsg || $errCode || empty($response) ||  (($httpCode != 200) && ($httpCode != 201))) {
             curl_close($ch);
-            $callBack(array(
+            $arrayError = array(
                 "httpStatus" => $httpCode, 
                 "httpMsg" => $response, 
                 "code" => $errCode, 
-                "msg" => $errMsg), 
-                NULL, NULL);
-            return;
+                "msg" => $errMsg);
+
+            if (count($callBack)) $callBack[0]($arrayError, NULL, NULL);
+            
+            return $arrayError;
         }
 
         curl_close($ch);
@@ -43,12 +50,15 @@ class Authentication {
         $responseJson = json_decode($response);
 
         if ($responseJson->success != true) {
-            curl_close($ch);
-            $callBack(array("code" => '-1', "httpMsg" => $responseJson->errors), NULL, NULL);
-            return;
+            $arrayError = array("code" => '-1', "httpMsg" => $responseJson->errors);
+            if (count($callBack)) $callBack[0]($arrayError, NULL, NULL); 
+            return $arrayError;
         }
 
-        $callBack(NULL, $responseJson->accessToken, $responseJson->refreshToken);
+        if (count($callBack))
+            $callBack[0](NULL, $responseJson->accessToken, $responseJson->refreshToken);
+        
+        return array("token" => $responseJson->accessToken, "refreshToken" => $responseJson->refreshToken);
     }
 
     // @TODO: A implementar
