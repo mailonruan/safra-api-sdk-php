@@ -32,7 +32,7 @@ $pay = AditumPayments\ApiSDK\Payment::getInstance(array(
 
 $callback2 = function($err, $chargeStatus, $data) : void {
     if ($err == NULL) {
-        if ($chargeStatus == AditumPayments\ApiSDK\Configuration::CHARGE_STATUS_AUTHORIZED) echo "Aprovado!";
+        if ($chargeStatus == AditumPayments\ApiSDK\Payment::CHARGE_STATUS_AUTHORIZED) echo "Aprovado!";
 
     } else {
         echo 'httStatus: '.$err["httpStatus"].' httpMsg: '.$err["httpMsg"].' code: '.$err['code'].' msg:'.$err['msg'];
@@ -42,11 +42,11 @@ $callback2 = function($err, $chargeStatus, $data) : void {
 $data = array(
     "cardNumber" => "5463373320417272",
     "cvv" => "879",
-    "brandName" => AditumPayments\ApiSDK\Configuration::CARD_BRAND_MASTER_CARD,
+    "brandName" => $pay::CARD_BRAND_MASTER_CARD,
     "cardholderName" => "CERES ROHANA",
     "expirationMonth" => 10,
     "expirationYear" => 2022,
-    "paymentType" => AditumPayments\ApiSDK\Configuration::PAYMENT_TYPE_CREDIT,
+    "paymentType" => $pay::PAYMENT_TYPE_CREDIT,
     "amount" => 100,
 );
 
