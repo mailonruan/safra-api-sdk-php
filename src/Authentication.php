@@ -1,6 +1,6 @@
 <?php
 
-namespace AditumPayments;
+namespace AditumPayments\ApiSDK;
 
 class Authentication {
     public function requestToken($params, $callBack) {
