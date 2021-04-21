@@ -1,12 +1,12 @@
 <?php
 
 require __DIR__ . '/vendor/autoload.php';
-
+/*
 $auth = new AditumPayments\ApiSDK\Authentication;
 $pay = new AditumPayments\ApiSDK\Payment;
 $config = AditumPayments\ApiSDK\Configuration::getInstance();
 
-/*
+
 // ----------------------------------------------------CONFIGURAÇÃO -------------------------------------------------------
 $config->setUrl($config->getDevUrl()); // Caso não defina a url, será usada de produção
 $config->setCustomerName("ceres");
@@ -45,6 +45,17 @@ if (isset($res["token"])) {
     ."\n code: ".$res['code']
     ."\n msg:".$res['msg']
     ."\n";
+}
+
+// --------------------------------------------------TRANSACTION ----------------------------------------------------------
+$transaction = new AditumPayments\ApiSDK\Transaction;
+$transaction->setCardNumber("5463373320417272"); // Guarda o número do cartão
+
+$brandName = $transaction->getBrandCardBin();
+if ($brandName == NULL) {
+	echo  "Falha ao tentar pegar o nome da bandeira do cartão\n";
+} else {
+	echo $brandName."\n";
 }
 
 // --------------------------------------------------AUTORIZAÇÃO-------------------------------------------------------------

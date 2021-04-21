@@ -142,10 +142,10 @@ $callback1 = function($err, $token, $refreshToken) : void {
 		$config->setToken($token);
 	} else {
 		echo  "httStatus: ".$err["httpStatus"]
-		."\nhttpMsg: ".$err["httpMsg"]
-		."\ncode: ".$err['code']
-		."\nmsg: ".$err['msg']
-		."\n";
+			."\nhttpMsg: ".$err["httpMsg"]
+			."\ncode: ".$err['code']
+			."\nmsg: ".$err['msg']
+			."\n";
 	}
 };
 
@@ -164,13 +164,30 @@ if (isset($res["token"])) {
 	
 } else {
 	echo  "httStatus: ".$res["httpStatus"]
-	."\n httpMsg: ".$res["httpMsg"]
-	."\n code: ".$res['code']
-	."\n msg:".$res['msg']
-	."\n";
+		."\n httpMsg: ".$res["httpMsg"]
+		."\n code: ".$res['code']
+		."\n msg:".$res['msg']
+		."\n";
 }
 ```
 #
+## Transaction
+
+
+### getBrandCardBin() : string
+Retorna o nome da bandeira do cartão, baseado no número do cartão guardado.
+```php
+$transaction = new AditumPayments\ApiSDK\Transaction;
+$transaction->setCardNumber("5463373320417272"); // Guarda o número do cartão
+
+$brandName = $transaction->getBrandCardBin();
+if ($brandName == NULL) {
+	echo  "Falha ao tentar pegar o nome da bandeira do cartão\n";
+} else {
+	echo $brandName."\n";
+}
+
+```
 
 ## Payment
 
@@ -232,7 +249,7 @@ AditumPayments\ApiSDK\Payment::CARD_BRAND_REDE_COMPRAS;
 #
 
 ### authorization(object`(Transaction)`,  callback`(opcional)`) : array()
-Retorna o `token` necessário para conseguir se comunicar com a api da **Aditum**.			      |
+Retorna o `token` necessário para conseguir se comunicar com a api da **Aditum**.
 
 **Uso de callback:**
 ```php
@@ -253,10 +270,10 @@ if ($err == NULL) {
 		echo  "Aprovado!\n";
 	} else {
 		echo  "httStatus: ".$err["httpStatus"]
-		."\n httpMsg: ".$err["httpMsg"]
-		."\n code: ".$err['code']
-		."\n msg:".$err['msg']
-		."\n";
+			."\n httpMsg: ".$err["httpMsg"]
+			."\n code: ".$err['code']
+			."\n msg:".$err['msg']
+			."\n";
 	}
 };
 
@@ -283,10 +300,10 @@ if (isset($res["status"])) {
 		echo  "Aprovado!\n";
 } else {
 	echo  "httStatus: ".$res["httpStatus"]
-	."\n httpMsg: ".$res["httpMsg"]
-	."\n code: ".$res['code']
-	."\n msg:".$res['msg']
-	."\n";
+		."\n httpMsg: ".$res["httpMsg"]
+		."\n code: ".$res['code']
+		."\n msg:".$res['msg']
+		."\n";
 }
 ```
 
