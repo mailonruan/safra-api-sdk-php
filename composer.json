@@ -1,9 +1,12 @@
 {
     "name": "aditum-payments/aditum-api-sdk-php",
+    "type": "library",
+	"keywords": ["aditum","aditumpay", "payment", "acquirer"],
     "authors": [
         {
             "name": "Nibble One",
-            "email": "jackson.garcia@nibbleone.com.br"
+            "email": "jackson.garcia@nibbleone.com.br",
+            "role": "developer"
         }
     ],
     "require": {
