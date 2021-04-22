@@ -9,6 +9,7 @@
             "role": "developer"
         }
     ],
+    "license": "GPL-3.0-or-later",
     "require": {
         "phpunit/phpunit": "^9.5"
     },
