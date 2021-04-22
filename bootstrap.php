@@ -1,7 +1,7 @@
 <?php
 
 require __DIR__ . '/vendor/autoload.php';
-/*
+
 $auth = new AditumPayments\ApiSDK\Authentication;
 $pay = new AditumPayments\ApiSDK\Payment;
 $config = AditumPayments\ApiSDK\Configuration::getInstance();
@@ -9,8 +9,6 @@ $config = AditumPayments\ApiSDK\Configuration::getInstance();
 
 // ----------------------------------------------------CONFIGURAÇÃO -------------------------------------------------------
 $config->setUrl($config->getDevUrl()); // Caso não defina a url, será usada de produção
-$config->setCustomerName("ceres");
-$config->setCustomerEmail("ceres@aditum.co");
 $config->setCnpj("83032272000109");
 $config->setMerchantToken("mk_P1kT7Rngif1Xuylw0z96k3");
 
@@ -61,18 +59,26 @@ if ($brandName == NULL) {
 // --------------------------------------------------AUTORIZAÇÃO-------------------------------------------------------------
 
 $data = new AditumPayments\ApiSDK\Transaction;
+$data->setCustomerName("ceres");
+$data->setCustomerEmail("ceres@aditum.co");
 $data->setCardNumber("5463373320417272");
 $data->setCVV("879");
 $data->setCardholderName("CERES ROHANA");
 $data->setExpirationMonth(10);
 $data->setExpirationYear(2022);
 $data->setAmount(100);
-$data->setPaymentType($pay::PAYMENT_TYPE_CREDIT);
+$data->setPaymentType(AditumPayments\ApiSDK\PaymentType::CREDIT);
+
+// Só pode ser maior que 1 se o tipo de transação for crédito.
+$data->setInstallmentNumber(2);
+
+// Valor padrão AditumPayments\ApiSDK\AcquirerCode::ADITUM_ECOM
+$data->getAcquirer(AditumPayments\ApiSDK\AcquirerCode::SIMULADOR); 
 
 // Uso de callback
 $callback2 = function($err, $chargeStatus, $data) : void {
     if ($err == NULL) {
-        if ($chargeStatus == AditumPayments\ApiSDK\Payment::CHARGE_STATUS_AUTHORIZED) echo "Aprovado!\n";
+        if ($chargeStatus == AditumPayments\ApiSDK\ChargeStatus::AUTHORIZED) echo "Aprovado!\n";
 
     } else {
         echo "httStatus: ".$err["httpStatus"]
@@ -89,7 +95,7 @@ $pay->authorization($data, $callback2);
 $res = $pay->authorization($data);
 
 if (isset($res["status"])) {
-    if ($res["status"] == $pay::CHARGE_STATUS_AUTHORIZED) echo "Aprovado!\n";
+    if ($res["status"] == AditumPayments\ApiSDK\ChargeStatus::AUTHORIZED) echo "Aprovado!\n";
 } else {
     echo "httStatus: ".$res["httpStatus"]
     ."\n httpMsg: ".$res["httpMsg"]
@@ -97,4 +103,3 @@ if (isset($res["status"])) {
     ."\n msg:".$res['msg']
     ."\n";
 }
-*/

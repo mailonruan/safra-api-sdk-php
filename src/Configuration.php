@@ -8,8 +8,6 @@ class Configuration {
     private $ProdUrl = "https://payment.aditum.com.br/v2/";
     private $DevUrl = "https://payment-dev.aditum.com.br/v2/";
     private $token = "";
-    private $customerName = "";
-    private $customerEmail = "";
     private $cnpj = "";
     private $merchantToken = "";
 
@@ -23,8 +21,6 @@ class Configuration {
             if ($params != NULL) {
                 self::$instance->setURL($params["url"]);
                 self::$instance->setToken($params["token"]);
-                self::$instance->setCustomerName($params["customerName"]);
-                self::$instance->setCustomerEmail($params["customerEmail"]);
             }
         }
 
@@ -53,22 +49,6 @@ class Configuration {
 
     public function getToken() {
         return $this->token;
-    }
-
-    public function setCustomerName($customerName) {
-        $this->customerName = $customerName;
-    }
-
-    public function getCustomerName() {
-        return $this->customerName;
-    }
-
-    public function setCustomerEmail($customerEmail) {
-        $this->customerEmail = $customerEmail;
-    }
-
-    public function getCustomerEmail() {
-        return $this->customerEmail;
     }
 
     public function getCnpj() {

@@ -6,17 +6,23 @@ class Transaction {
 
     private $config;
 
+    // customer
+    private $customerName = "";
+    private $customerEmail = "";
+
+    // Transactions.Card
+    private $brandName = "";
     private $cardNumber = "";
     private $cvv = "";
     private $cardholderName = "";
     private $expirationMonth = "";
     private $expirationYear = "";
-    private $paymentType = "";
-    private $amount = "";
 
-    private $brandName = "";
-    private $customerName = "";
-    private $customerEmail = "";
+    // Transactions
+    private $acquirer = NULL;
+    private $amount = "";
+    private $paymentType = "";
+    private $installmentNumber = 1;
 
     public function __construct($objectConfig = NULL) {
         $this->config = ($objectConfig) ? $objectConfig : Configuration::getInstance();
@@ -78,6 +84,39 @@ class Transaction {
         $this->amount = $amount;
     }
 
+
+    public function setCustomerName($customerName) {
+        $this->customerName = $customerName;
+    }
+
+    public function getCustomerName() {
+        return $this->customerName;
+    }
+
+    public function setCustomerEmail($customerEmail) {
+        $this->customerEmail = $customerEmail;
+    }
+
+    public function getCustomerEmail() {
+        return $this->customerEmail;
+    }
+
+    public function setAcquirer($acquirer) {
+        $this->acquirer = $acquirer;
+    }
+
+    public function getAcquirer() {
+        return ($this->acquirer)? $this->acquirer : AcquirerCode::ADITUM_ECOM;
+    }
+
+    public function setInstallmentNumber($installmentNumber) {
+        $this->installmentNumber = $installmentNumber;
+    }
+
+    public function getInstallmentNumber() {
+        return $this->installmentNumber;
+    }
+
     public function getBrandCardBin(...$args) {
         $cardNumber = (count($args))? $arrgs[0] : $this->getCardNumber();
 
@@ -113,28 +152,23 @@ class Transaction {
     }
 
     public function toJson() {
-        $brandName = $this->getBrandCardBin();
-        if ($brandName == NULL) {
-            echo "AditumPayments\\\ApiSDK\\Transaction::toJson -> Falha ao fazer request da bandeira do cartão\n";
-            return NULL;
-        }
-
         return json_encode(array(
             "charge" => array(
                 "customer" => array(
-                    "name" => $this->config->getCustomerName(),
-                    "email" => $this->config->getCustomerEmail()
+                    "name" => $this->getCustomerName(),
+                    "email" => $this->getCustomerEmail()
                 ),
                 "transactions" => [
                     array(
                         "card" => array(
                             "cardNumber" => $this->getCardNumber(),
                             "cvv" => $this->getCVV(),
-                            "brandName" => $brandName,
                             "cardholderName" => $this->getCardholderName(),
                             "expirationMonth" => $this->getExpirationMonth(),
                             "expirationYear" => $this->getExpirationYear()
                         ),
+                        "installmentNumber" => $this->getInstallmentNumber(),
+                        "acquirer" => $this->getAcquirer(),
                         "paymentType" => $this->getPaymentType(),
                         "amount" => $this->getAmount(),
                         "softDescriptor" => "TST003",
