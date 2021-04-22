@@ -78,12 +78,14 @@ class Transaction {
         $this->amount = $amount;
     }
 
-    public function getBrandCardBin() {
+    public function getBrandCardBin(...$args) {
+        $cardNumber = (count($args))? $arrgs[0] : $this->getCardNumber();
+
         $url = "https://portal-dev.aditum.com.br/v1/"; // @TODO: necessário remover quando estiver no novo endpoint
         $ch = curl_init();
 
         curl_setopt_array($ch, [
-            CURLOPT_URL => "{$url}card/bin/brand/{$this->getCardNumber()}",
+            CURLOPT_URL => "{$url}card/bin/brand/{$cardNumber}",
             CURLOPT_HTTPHEADER => [
                 "Content-Type: application/json",
                 "Authorization: Bearer {$this->config->getToken()}"

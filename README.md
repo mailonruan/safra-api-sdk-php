@@ -174,10 +174,22 @@ if (isset($res["token"])) {
 ## Transaction
 
 
-### getBrandCardBin() : string
+### getBrandCardBin(string`(opcional)`) : string
 Retorna o nome da bandeira do cartão, baseado no número do cartão guardado.
 ```php
 $transaction = new AditumPayments\ApiSDK\Transaction;
+
+$brandName = $transaction->getBrandCardBin("5463373320417272");
+if ($brandName == NULL) {
+	echo  "Falha ao tentar pegar o nome da bandeira do cartão\n";
+} else {
+	echo $brandName."\n";
+}
+
+// =============================================================================
+
+$transaction = new AditumPayments\ApiSDK\Transaction;
+
 $transaction->setCardNumber("5463373320417272"); // Guarda o número do cartão
 
 $brandName = $transaction->getBrandCardBin();
