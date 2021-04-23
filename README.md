@@ -208,56 +208,96 @@ AditumPayments\ApiSDK\AcquirerCode::SAFRAPAYTEF;
 AditumPayments\ApiSDK\AcquirerCode::VR_BENEFITS;
 AditumPayments\ApiSDK\AcquirerCode::SIMULADOR;
 ```
+#
+
+# PhoneType
+### Tipos de telefones
+```php
+AditumPayments\ApiSDK\PhoneType::RESIDENCIAL;
+AditumPayments\ApiSDK\PhoneType::COMERCIAL;
+AditumPayments\ApiSDK\PhoneType::VOICEMAIL;
+AditumPayments\ApiSDK\PhoneType::TEMPORARY;
+AditumPayments\ApiSDK\PhoneType::MOBILE;
+```
+# DocumentType
+### Tipos de documentos
+```php
+AditumPayments\ApiSDK\DocumentType::CPF;
+AditumPayments\ApiSDK\DocumentType::CNPJ;
+```
 
 #
 
-## Charge
+## Charge: object abstract
 
 
 #### Customer: object()
 ```php
-$authorization = AditumPayments\ApiSDK\Authorization;
+$charge = AditumPayments\ApiSDK\Authorization;
 
-$authorization->customer->setName('fulano'); // Grava o nome do comprador.
-$authorization->customer->setEmail('ceres'); //Guarda o email do comprador
-
-echo $authorization->customer->getName(); // Retorna o nome do comprador
-echo $authorization->customer->getEmail(); // Retorna o email do comprador
+$charge->customer->setName('fulano'); // Grava o nome do comprador.
+$charge->customer->setEmail('ceres'); //Guarda o email do comprador
+$charge->customer->setDocumentType(AditumPayments\ApiSDK\DocumentType::CPF);
+$charge->customer->setDocument("14533859759");
 ```
 
-### Charge: object()
+### Customer->address: object()
 ```php
-$authorization = AditumPayments\ApiSDK\Authorization;
+$charge = AditumPayments\ApiSDK\Authorization;
 
-$authorization->transactions->setAmount(100); // Valor a ser cobrado em centavos
-$authorization->transactions->setPaymentType(AditumPayments\ApiSDK\PaymentType::CREDIT); // Tipo de pagamento
-$authorization->transactions->setInstallmentNumber(2); // Só pode ser maior que 1 se o tipo de transação for crédito.
-$authorization->transactions->getAcquirer(AditumPayments\ApiSDK\AcquirerCode::SIMULADOR); // Valor padrão AditumPayments\ApiSDK\AcquirerCode::ADITUM_ECOM
-
-echo $authorization->transactions->getAmount(); // Retorna o valor à cobrar em centavos
-echo $authorization->transactions->getPaymentType(); // Retorna o time de pagamento baseado no enum PaymentType
-echo $authorization->transactions->getInstallmentNumber(); // Retorna o números de parcelas
-echo $authorization->transactions->getAcquirer(); // Retorna para qual adquirente está apontando
-
+$charge->customer->address->setStreet("Avenida Salvador");
+$charge->customer->address->setNumber("5401");
+$charge->customer->address->setNeighborhood("Recreio dos bandeirantes");
+$charge->customer->address->setCity("Rio de janeiro");
+$charge->customer->address->setState("RJ");
+$charge->customer->address->setCountry("BR");
+$charge->customer->address->setZipcode("2279714");
+$charge->customer->address->setComplement("");
 ```
 
-### Charge->card: object()
+### Customer->phone: object()
 ```php
-$authorization = AditumPayments\ApiSDK\Authorization;
+$charge = AditumPayments\ApiSDK\Authorization;
 
-$authorization->transactions->card->setCardNumber("5463373320413232"); // PAN do cartão
-$authorization->transactions->card->setCVV("879"); //Número de segurança do cartão
-$authorization->transactions->card->setCardholderName("FULANO FULANO"); // Nome do comprador impresso no cartão
-$authorization->transactions->card->setExpirationMonth(10); // Mês de expiração do cartão
-$authorization->transactions->card->setExpirationYear(2022); // Ano de expiração do cartão
+$charge->customer->phone->setCountryCode("55");
+$charge->customer->phone->setAreaCode("21");
+$charge->customer->phone->setNumber("98491715");
+$charge->customer->phone->setType(AditumPayments\ApiSDK\PhoneType::MOBILE);
+```
+
+### Transactions: object()
+```php
+$charge = AditumPayments\ApiSDK\Authorization;
+
+$charge->transactions->setAmount(100); // Valor a ser cobrado em centavos
+
+// Apenas para pagamento com cartão
+$charge->transactions->setPaymentType(AditumPayments\ApiSDK\PaymentType::CREDIT); // Tipo de pagamento
+$charge->transactions->setInstallmentNumber(2); // Só pode ser maior que 1 se o tipo de transação for crédito.
+$charge->transactions->setAcquirer(AditumPayments\ApiSDK\AcquirerCode::SIMULADOR); // Valor padrão AditumPayments\ApiSDK\AcquirerCode::ADITUM_ECOM
+
+// Apenas para boleto
+$charge = AditumPayments\ApiSDK\Boleto;
+$boleto->transactions->setInstructions("Crédito de teste");
+```
+
+### Transactions->card: object()
+```php
+$charge = AditumPayments\ApiSDK\Authorization;
+
+$charge->transactions->card->setCardNumber("5463373320413232"); // PAN do cartão
+$charge->transactions->card->setCVV("879"); //Número de segurança do cartão
+$charge->transactions->card->setCardholderName("FULANO FULANO"); // Nome do comprador impresso no cartão
+$charge->transactions->card->setExpirationMonth(10); // Mês de expiração do cartão
+$charge->transactions->card->setExpirationYear(2022); // Ano de expiração do cartão
 ```
 
 ### getBrandCardBin(string`(opcional)`) : string
 Retorna o nome da bandeira do cartão, baseado no número do cartão guardado.
 ```php
-$authorization = new AditumPayments\ApiSDK\Authorization;
+$charge = new AditumPayments\ApiSDK\Authorization;
 
-$brandName = $authorization->getBrandCardBin("5463373320413232");
+$brandName = $charge->getBrandCardBin("5463373320413232");
 if ($brandName == NULL) {
 	echo  "Falha ao tentar pegar o nome da bandeira do cartão\n";
 } else {
@@ -266,10 +306,10 @@ if ($brandName == NULL) {
 
 // =============================================================================
 
-$authorization = new AditumPayments\ApiSDK\Authorization;
+$charge = new AditumPayments\ApiSDK\Authorization;
 
-$authorization->transactions->card->setCardNumber("5463373320413232"); // Guarda o número do cartão
-$brandName = $authorization->getBrandCardBin();
+$charge->transactions->card->setCardNumber("5463373320413232"); // Guarda o número do cartão
+$brandName = $charge->getBrandCardBin();
 if ($brandName == NULL) {
 	echo  "Falha ao tentar pegar o nome da bandeira do cartão\n";
 } else {
@@ -279,8 +319,8 @@ if ($brandName == NULL) {
 
 ## Payment
 
-### authorization(object`(Transaction)`,  callback`(opcional)`) : array()
-Retorna o `token` necessário para conseguir se comunicar com a api da **Aditum**.
+### chargeAuthorization(object`(Authorization)`,  callback`(opcional)`) : array()
+Faz uma transação por cartão.
 
 **Uso de callback:**
 ```php
@@ -349,6 +389,154 @@ if (isset($res["status"])) {
 	echo  "httStatus: ".$res["httpStatus"]
 		."\n httpMsg: ".$res["httpMsg"]
 		."\n";
+}
+```
+
+### chargeBoleto(object`(Boleto)`,  callback`(opcional)`) : array()
+Faz uma transação por boleto.
+
+**Uso de callback:**
+```php
+$pay = AditumPayments\ApiSDK\Payment;
+$boleto = new AditumPayments\ApiSDK\Boleto;
+
+// Customer
+$boleto->customer->setName("fulano");
+$boleto->customer->setEmail("fulano@aditum.co");
+$boleto->customer->setDocumentType(AditumPayments\ApiSDK\DocumentType::CPF);
+$boleto->customer->setDocument("14533859755");
+
+// Customer->address
+$boleto->customer->address->setStreet("Avenida Salvador");
+$boleto->customer->address->setNumber("5401");
+$boleto->customer->address->setNeighborhood("Recreio dos bandeirantes");
+$boleto->customer->address->setCity("Rio de janeiro");
+$boleto->customer->address->setState("RJ");
+$boleto->customer->address->setCountry("BR");
+$boleto->customer->address->setZipcode("2279714");
+$boleto->customer->address->setComplement("");
+
+// Customer->phone
+$boleto->customer->phone->setCountryCode("55");
+$boleto->customer->phone->setAreaCode("21");
+$boleto->customer->phone->setNumber("98491715");
+$boleto->customer->phone->setType(AditumPayments\ApiSDK\PhoneType::MOBILE);
+
+// Transactions
+$boleto->transactions->setAmount(30000);
+$boleto->transactions->setInstructions("Crédito de teste");
+
+$callback = function($err, $status, $charge) : void {
+	if ($err == NULL) {
+		if ($status == AditumPayments\ApiSDK\ChargeStatus::PRE_AUTHORIZED) echo  "PRÉ AUTORIZADO!\n";
+	} else {
+		echo  "httStatus: ".$err["httpStatus"]
+		."\n httpMsg: ".$err["httpMsg"]
+		."\n";
+	}
+};
+
+$pay->chargeBoleto($boleto, $callback);
+```
+
+**Uso de retorno da função**
+```php
+$pay = AditumPayments\ApiSDK\Payment;
+$boleto = new AditumPayments\ApiSDK\Boleto;
+
+// Customer
+$boleto->customer->setName("fulano");
+$boleto->customer->setEmail("fulano@aditum.co");
+$boleto->customer->setDocumentType(AditumPayments\ApiSDK\DocumentType::CPF);
+$boleto->customer->setDocument("14533859755");
+
+// Customer->address
+$boleto->customer->address->setStreet("Avenida Salvador");
+$boleto->customer->address->setNumber("5401");
+$boleto->customer->address->setNeighborhood("Recreio dos bandeirantes");
+$boleto->customer->address->setCity("Rio de janeiro");
+$boleto->customer->address->setState("RJ");
+$boleto->customer->address->setCountry("BR");
+$boleto->customer->address->setZipcode("2279714");
+$boleto->customer->address->setComplement("");
+
+// Customer->phone
+$boleto->customer->phone->setCountryCode("55");
+$boleto->customer->phone->setAreaCode("21");
+$boleto->customer->phone->setNumber("98491715");
+$boleto->customer->phone->setType(AditumPayments\ApiSDK\PhoneType::MOBILE);
+
+// Transactions
+$boleto->transactions->setAmount(30000);
+$boleto->transactions->setInstructions("Crédito de teste");
+
+$res = $pay->chargeBoleto($boleto);
+
+if (isset($res["status"])) {
+	if ($res["status"] == AditumPayments\ApiSDK\ChargeStatus::PRE_AUTHORIZED) echo  "PRÉ AUTORIZADO!\n";
+} else {
+	echo  "httStatus: ".$res["httpStatus"]
+	."\n httpMsg: ".$res["httpMsg"]
+	."\n";
+}
+```
+
+### chargeStatus(string`(chargeId)`,  callback`(opcional)`) : array()
+Pega as informações de uma cobrança pelo seu GUID ID ou NSU..
+
+**Uso de callback:**
+```php
+$pay = AditumPayments\ApiSDK\Payment;
+
+// Implementação do boleto...
+
+$id = "";
+$res = $pay->chargeBoleto($boleto);
+if (isset($res["status"])) {
+	$id = $res["charge"]->id;
+} else {
+	echo  "httStatus: ".$res["httpStatus"]
+	."\n httpMsg: ".$res["httpMsg"]
+	."\n";
+}
+
+$callback = function($err, $status, $charge) : void {
+	if ($err == NULL) {
+		echo  $status."\n";;
+	} else {
+		echo  "httStatus: ".$err["httpStatus"]
+		."\n httpMsg: ".$err["httpMsg"]
+		."\n";
+	}
+};
+
+$pay->chargeStatus($id, $callback);
+```
+
+**Uso de retorno da função**
+```php
+$pay = AditumPayments\ApiSDK\Payment;
+
+// Implementação do boleto...
+
+$id = "";
+$res = $pay->chargeBoleto($boleto);
+if (isset($res["status"])) {
+	$id = $res["charge"]->id;
+} else {
+	echo  "httStatus: ".$res["httpStatus"]
+	."\n httpMsg: ".$res["httpMsg"]
+	."\n";
+}
+
+$res = $pay->chargeStatus($id);
+
+if (isset($res["status"])) {
+	echo  $res["status"]."\n";
+} else {
+	echo  "httStatus: ".$res["httpStatus"]
+	."\n httpMsg: ".$res["httpMsg"]
+	."\n";
 }
 ```
 
