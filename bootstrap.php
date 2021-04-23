@@ -1,7 +1,7 @@
 <?php
 
 require __DIR__ . '/vendor/autoload.php';
-
+/*
 $auth = new AditumPayments\ApiSDK\Authentication;
 $pay = new AditumPayments\ApiSDK\Payment;
 
@@ -190,3 +190,4 @@ if (isset($res["status"])) {
     ."\n httpMsg: ".$res["httpMsg"]
     ."\n";
 }
+*/
