@@ -9,7 +9,7 @@ class Configuration {
     private $DevUrl = "https://payment-dev.aditum.com.br/v2/";
     private $token = "";
     private $cnpj = "";
-    private $merchantToken = "";
+    private $merchantId = "";
 
     public static $instance;
 
@@ -59,11 +59,11 @@ class Configuration {
         $this->cnpj = $cnpj;
     }
 
-    public function getMerchantToken() {
-        return $this->merchantToken;
+    public function getMerchantId() {
+        return $this->merchantId;
     }
 
-    public function setMerchantToken($merchantToken) {
-        $this->merchantToken = $merchantToken;
+    public function setMerchantId($merchantId) {
+        $this->merchantId = $merchantId;
     }
 }

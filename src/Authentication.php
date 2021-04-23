@@ -10,7 +10,7 @@ class Authentication {
     }
 
     public function requestToken(...$callBack) {
-        $merchantCredential = password_hash($this->config->getCnpj()."".$this->config->getMerchantToken(), PASSWORD_BCRYPT, [
+        $merchantCredential = password_hash($this->config->getCnpj()."".$this->config->getMerchantId(), PASSWORD_BCRYPT, [
             'cost' => 12,
         ]);
 

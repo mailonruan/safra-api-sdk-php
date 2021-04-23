@@ -10,7 +10,7 @@ $config = AditumPayments\ApiSDK\Configuration::getInstance();
 // ----------------------------------------------------CONFIGURAÇÃO -------------------------------------------------------
 $config->setUrl($config->getDevUrl()); // Caso não defina a url, será usada de produção
 $config->setCnpj("83032272000109");
-$config->setMerchantToken("mk_P1kT7Rngif1Xuylw0z96k3");
+$config->setMerchantId("mk_P1kT7Rngif1Xuylw0z96k3");
 
 // ----------------------------------------------------AUTENTICAÇÃO --------------------------------------------------------
 // Uso de callback
