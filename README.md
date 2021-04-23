@@ -102,8 +102,6 @@ $callback1 = function($err, $token, $refreshToken) : void {
 	} else {
 		echo  "httStatus: ".$err["httpStatus"]
 			."\nhttpMsg: ".$err["httpMsg"]
-			."\ncode: ".$err['code']
-			."\nmsg: ".$err['msg']
 			."\n";
 	}
 };
@@ -124,8 +122,6 @@ if (isset($res["token"])) {
 } else {
 	echo  "httStatus: ".$res["httpStatus"]
 		."\n httpMsg: ".$res["httpMsg"]
-		."\n code: ".$res['code']
-		."\n msg:".$res['msg']
 		."\n";
 }
 ```
@@ -215,70 +211,53 @@ AditumPayments\ApiSDK\AcquirerCode::SIMULADOR;
 
 #
 
-## Transaction
+## Charge
 
-### setCustomerName(string)
-Grava o `name` para ser usado em futuras requisições.
+
+#### Customer: object()
 ```php
-$config = AditumPayments\ApiSDK\Transaction::getInstance();
-$config->setCustomerName('ceres');
+$authorization = AditumPayments\ApiSDK\Authorization;
+
+$authorization->customer->setName('fulano'); // Grava o nome do comprador.
+$authorization->customer->setEmail('ceres'); //Guarda o email do comprador
+
+echo $authorization->customer->getName(); // Retorna o nome do comprador
+echo $authorization->customer->getEmail(); // Retorna o email do comprador
 ```
 
-### getCustomerName() : string
-Retorna o `name` gravado.
+### Charge: object()
 ```php
-$config = AditumPayments\ApiSDK\Transaction::getInstance();
-echo $config->getCustomerName();
+$authorization = AditumPayments\ApiSDK\Authorization;
+
+$authorization->transactions->setAmount(100); // Valor a ser cobrado em centavos
+$authorization->transactions->setPaymentType(AditumPayments\ApiSDK\PaymentType::CREDIT); // Tipo de pagamento
+$authorization->transactions->setInstallmentNumber(2); // Só pode ser maior que 1 se o tipo de transação for crédito.
+$authorization->transactions->getAcquirer(AditumPayments\ApiSDK\AcquirerCode::SIMULADOR); // Valor padrão AditumPayments\ApiSDK\AcquirerCode::ADITUM_ECOM
+
+echo $authorization->transactions->getAmount(); // Retorna o valor à cobrar em centavos
+echo $authorization->transactions->getPaymentType(); // Retorna o time de pagamento baseado no enum PaymentType
+echo $authorization->transactions->getInstallmentNumber(); // Retorna o números de parcelas
+echo $authorization->transactions->getAcquirer(); // Retorna para qual adquirente está apontando
+
 ```
 
-### setCustomerEmail(string)
-Grava o `email` para ser usado em futuras requisições.
+### Charge->card: object()
 ```php
-$config = AditumPayments\ApiSDK\Transaction::getInstance();
-$config->setCustomerEmail('ceres');
-```
+$authorization = AditumPayments\ApiSDK\Authorization;
 
-### getCustomerEmail() : string
-Retorna o `email` gravado.
-```php
-$config = AditumPayments\ApiSDK\Transaction::getInstance();
-echo $config->getCustomerEmail();
-```
-
-### setAcquirer(string)
-Altera por qual adquirente irá passar a transação.
-```php
-$config = AditumPayments\ApiSDK\Transaction::getInstance();
-$config->setAcquirer(AditumPayments\ApiSDK\Transaction::SIMULADOR);
-```
-
-### getAcquirer() : string
-Retorna o `acquirer` alterado.
-```php
-$config = AditumPayments\ApiSDK\Transaction::getInstance();
-echo $config->getAcquirer();
-```
-
-### setInstallmentNumber(int)
-Quantidade de parcelas. Só pode ser maior que 1 se o tipo de transação for crédito.
-```php
-$config = AditumPayments\ApiSDK\Transaction::getInstance();
-$config->setInstallmentNumber(2);
-```
-
-### getInstallmentNumber() : int
-Retorna a quantidade de parcelas.
-```php
-$config = AditumPayments\ApiSDK\Transaction::getInstance();
-echo $config->getInstallmentNumber();
+$authorization->transactions->card->setCardNumber("5463373320413232"); // PAN do cartão
+$authorization->transactions->card->setCVV("879"); //Número de segurança do cartão
+$authorization->transactions->card->setCardholderName("FULANO FULANO"); // Nome do comprador impresso no cartão
+$authorization->transactions->card->setExpirationMonth(10); // Mês de expiração do cartão
+$authorization->transactions->card->setExpirationYear(2022); // Ano de expiração do cartão
 ```
 
 ### getBrandCardBin(string`(opcional)`) : string
 Retorna o nome da bandeira do cartão, baseado no número do cartão guardado.
 ```php
-$transaction = new AditumPayments\ApiSDK\Transaction;
+$authorization = new AditumPayments\ApiSDK\Authorization;
 
-$brandName = $transaction->getBrandCardBin("5463373320417272");
+$brandName = $authorization->getBrandCardBin("5463373320413232");
 if ($brandName == NULL) {
 	echo  "Falha ao tentar pegar o nome da bandeira do cartão\n";
 } else {
@@ -287,11 +266,10 @@ if ($brandName == NULL) {
 
 // =============================================================================
 
-$transaction = new AditumPayments\ApiSDK\Transaction;
+$authorization = new AditumPayments\ApiSDK\Authorization;
 
-$transaction->setCardNumber("5463373320417272"); // Guarda o número do cartão
-
-$brandName = $transaction->getBrandCardBin();
+$authorization->transactions->card->setCardNumber("5463373320413232"); // Guarda o número do cartão
+$brandName = $authorization->getBrandCardBin();
 if ($brandName == NULL) {
 	echo  "Falha ao tentar pegar o nome da bandeira do cartão\n";
 } else {
@@ -307,62 +285,62 @@ Retorna o `token` necessário para conseguir se comunicar com a api da **Aditum*
 **Uso de callback:**
 ```php
 $pay = AditumPayments\ApiSDK\Payment;
+$authorization = new AditumPayments\ApiSDK\Authorization;
 
-$data = new AditumPayments\ApiSDK\Transaction;
-$data->setCustomerName("ceres");
-$data->setCustomerEmail("ceres@aditum.co");
-$data->setCardNumber("5463373320417272");
-$data->setCVV("879");
-$data->setCardholderName("CERES ROHANA");
-$data->setExpirationMonth(10);
-$data->setExpirationYear(2022);
-$data->setAmount(100);
-$data->setPaymentType(AditumPayments\ApiSDK\PaymentType::CREDIT);
+// Customer
+$authorization->customer->setName("fulano");
+$authorization->customer->setEmail("fulano@aditum.co");
 
-// Só pode ser maior que 1 se o tipo de transação for crédito.
-$data->setInstallmentNumber(2);
+// Transactions
+$authorization->transactions->setAmount(100);
+$authorization->transactions->setPaymentType(AditumPayments\ApiSDK\PaymentType::CREDIT);
+$authorization->transactions->setInstallmentNumber(2); // Só pode ser maior que 1 se o tipo de transação for crédito.
+$authorization->transactions->getAcquirer(AditumPayments\ApiSDK\AcquirerCode::SIMULADOR); // Valor padrão AditumPayments\ApiSDK\AcquirerCode::ADITUM_ECOM
 
-// Valor padrão AditumPayments\ApiSDK\AcquirerCode::ADITUM_ECOM
-$data->getAcquirer(AditumPayments\ApiSDK\AcquirerCode::SIMULADOR); 
+// Transactions->card
+$authorization->transactions->card->setCardNumber("5463373320413232");
+$authorization->transactions->card->setCVV("387");
+$authorization->transactions->card->setCardholderName("FULANO FULANO");
+$authorization->transactions->card->setExpirationMonth(10);
+$authorization->transactions->card->setExpirationYear(2022);
 
-$callback2 = function($err, $chargeStatus, $data) : void {
+$callback2 = function($err, $status, $charge) : void {
 if ($err == NULL) {
-	if ($chargeStatus == AditumPayments\ApiSDK\ChargeStatus::AUTHORIZED)
+	if ($status == AditumPayments\ApiSDK\ChargeStatus::AUTHORIZED)
 		echo  "Aprovado!\n";
 	} else {
 		echo  "httStatus: ".$err["httpStatus"]
 			."\n httpMsg: ".$err["httpMsg"]
-			."\n code: ".$err['code']
-			."\n msg:".$err['msg']
 			."\n";
 	}
 };
 
-$pay->authorization($data, $callback2);
+$pay->chargeAuthorization($authorization, $callback2);
 ```
 
 **Uso de retorno da função**
 ```php
 $pay = AditumPayments\ApiSDK\Payment;
+$authorization = new AditumPayments\ApiSDK\Authorization;
 
-$data = new AditumPayments\ApiSDK\Transaction;
-$data->setCustomerName("ceres");
-$data->setCustomerEmail("ceres@aditum.co");
-$data->setCardNumber("5463373320417272");
-$data->setCVV("879");
-$data->setCardholderName("CERES ROHANA");
-$data->setExpirationMonth(10);
-$data->setExpirationYear(2022);
-$data->setAmount(100);
-$data->setPaymentType(AditumPayments\ApiSDK\PaymentType::CREDIT);
+// Customer
+$authorization->customer->setName("fulano");
+$authorization->customer->setEmail("fulano@aditum.co");
 
-// Só pode ser maior que 1 se o tipo de transação for crédito.
-$data->setInstallmentNumber(2);
+// Transactions
+$authorization->transactions->setAmount(100);
+$authorization->transactions->setPaymentType(AditumPayments\ApiSDK\PaymentType::CREDIT);
+$authorization->transactions->setInstallmentNumber(2); // Só pode ser maior que 1 se o tipo de transação for crédito.
+$authorization->transactions->getAcquirer(AditumPayments\ApiSDK\AcquirerCode::SIMULADOR); // Valor padrão AditumPayments\ApiSDK\AcquirerCode::ADITUM_ECOM
 
-// Valor padrão AditumPayments\ApiSDK\AcquirerCode::ADITUM_ECOM
-$data->getAcquirer(AditumPayments\ApiSDK\AcquirerCode::SIMULADOR); 
+// Transactions->card
+$authorization->transactions->card->setCardNumber("5463373320413232");
+$authorization->transactions->card->setCVV("387");
+$authorization->transactions->card->setCardholderName("fulano fulano");
+$authorization->transactions->card->setExpirationMonth(10);
+$authorization->transactions->card->setExpirationYear(2022);
 
-$res = $pay->authorization($data);
+$res = $pay->chargeAuthorization($authorization);
 
 if (isset($res["status"])) {
 	if ($res["status"] == AditumPayments\ApiSDK\ChargeStatus::AUTHORIZED) 
@@ -370,8 +348,6 @@ if (isset($res["status"])) {
 } else {
 	echo  "httStatus: ".$res["httpStatus"]
 		."\n httpMsg: ".$res["httpMsg"]
-		."\n code: ".$res['code']
-		."\n msg:".$res['msg']
 		."\n";
 }
 ```
