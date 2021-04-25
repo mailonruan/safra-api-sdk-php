@@ -1,5 +1,6 @@
 {
     "name": "aditum-payments/aditum-api-sdk-php",
+    "description": "Implementação em php da integração do gateway da api de pagamento da **Aditum**. Facilitando o desenvolvimento, sem precisar do entendimento das regras de negócio para fazer uso da api.",
     "type": "library",
 	"keywords": ["aditum","aditumpay", "payment", "acquirer"],
     "authors": [

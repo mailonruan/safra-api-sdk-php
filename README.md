@@ -1,3 +1,5 @@
+[![Packagist](https://img.shields.io/packagist/v/aditum-payments/aditum-api-sdk-php.svg?maxAge=2592000)](https://packagist.org/packages/aditum-payments/aditum-api-sdk-php)
+
 # Gateway Api Aditum
 
 Implementação em php da integração do gateway da api de pagamento da **Aditum**. Facilitando o desenvolvimento, sem precisar do entendimento das regras de negócio para fazer uso da api.
