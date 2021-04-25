@@ -355,7 +355,7 @@ if ($err == NULL) {
 	}
 };
 
-$pay->chargeAuthorization($authorization, $callback2);
+$pay->charge($authorization, $callback2);
 ```
 
 **Uso de retorno da função**
@@ -380,7 +380,7 @@ $authorization->transactions->card->setCardholderName("fulano fulano");
 $authorization->transactions->card->setExpirationMonth(10);
 $authorization->transactions->card->setExpirationYear(2022);
 
-$res = $pay->chargeAuthorization($authorization);
+$res = $pay->charge($authorization);
 
 if (isset($res["status"])) {
 	if ($res["status"] == AditumPayments\ApiSDK\ChargeStatus::AUTHORIZED) 
@@ -436,7 +436,7 @@ $callback = function($err, $status, $charge) : void {
 	}
 };
 
-$pay->chargeBoleto($boleto, $callback);
+$pay->charge($boleto, $callback);
 ```
 
 **Uso de retorno da função**
@@ -470,7 +470,7 @@ $boleto->customer->phone->setType(AditumPayments\ApiSDK\PhoneType::MOBILE);
 $boleto->transactions->setAmount(30000);
 $boleto->transactions->setInstructions("Crédito de teste");
 
-$res = $pay->chargeBoleto($boleto);
+$res = $pay->charge($boleto);
 
 if (isset($res["status"])) {
 	if ($res["status"] == AditumPayments\ApiSDK\ChargeStatus::PRE_AUTHORIZED) echo  "PRÉ AUTORIZADO!\n";

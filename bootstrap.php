@@ -64,6 +64,21 @@ $authorization = new AditumPayments\ApiSDK\Authorization;
 $authorization->customer->setName("fulano");
 $authorization->customer->setEmail("fulano@aditum.co");
 
+// Customer->address
+$authorization->customer->address->setStreet("Avenida Salvador");
+$authorization->customer->address->setNumber("5401");
+$authorization->customer->address->setNeighborhood("Recreio dos bandeirantes");
+$authorization->customer->address->setCity("Rio de janeiro");
+$authorization->customer->address->setState("RJ");
+$authorization->customer->address->setCountry("BR");
+$authorization->customer->address->setZipcode("2279714");
+$authorization->customer->address->setComplement("");
+
+// Customer->phone
+$authorization->customer->phone->setCountryCode("55");
+$authorization->customer->phone->setAreaCode("21");
+$authorization->customer->phone->setNumber("98491715");
+$authorization->customer->phone->setType(AditumPayments\ApiSDK\PhoneType::MOBILE);
 
 // Transactions
 $authorization->transactions->setAmount(100);
@@ -91,24 +106,28 @@ $callback2 = function($err, $status, $charge) : void {
     }
 };
 
-$pay->chargeAuthorization($authorization, $callback2);
+$pay->charge($authorization, $callback2);
 
 // Retorno de função
-$res = $pay->chargeAuthorization($authorization);
+$res = $pay->charge($authorization);
 
 if (isset($res["status"])) {
     if ($res["status"] == AditumPayments\ApiSDK\ChargeStatus::AUTHORIZED) echo "Aprovado!\n";
 } else {
-    echo "httStatus: ".$res["httpStatus"]
-    ."\n httpMsg: ".$res["httpMsg"]
-    ."\n";
+    if ($res != NULL)
+        echo "httStatus: ".$res["httpStatus"]
+        ."\n httpMsg: ".$res["httpMsg"]
+        ."\n";
 }
 
 // --------------------------------------------------BOLETO-------------------------------------------------------------
 
 $boleto = new AditumPayments\ApiSDK\Boleto;
 
+$boleto->setDeadline("2021-04-26");
+
 // Customer
+$boleto->customer->setId("00002");
 $boleto->customer->setName("fulano");
 $boleto->customer->setEmail("fulano@aditum.co");
 $boleto->customer->setDocumentType(AditumPayments\ApiSDK\DocumentType::CPF);
@@ -134,11 +153,20 @@ $boleto->customer->phone->setType(AditumPayments\ApiSDK\PhoneType::MOBILE);
 $boleto->transactions->setAmount(30000);
 $boleto->transactions->setInstructions("Crédito de teste");
 
+// Transactions->fine
+$boleto->transactions->fine->setStartDate("2");
+$boleto->transactions->fine->setAmount(300);
+$boleto->transactions->fine->setInterest(10);
+
+// Transactions->discount
+$boleto->transactions->discount->setType(AditumPayments\ApiSDK\DiscountType::FIXED);
+$boleto->transactions->discount->setAmount(200);
+$boleto->transactions->discount->setDeadline("1");
+
 // Uso de callback
 $callback2 = function($err, $status, $charge) : void {
     if ($err == NULL) {
         if ($status == AditumPayments\ApiSDK\ChargeStatus::PRE_AUTHORIZED) echo "PRÉ AUTORIZADO!\n";
-
     } else {
         echo "httStatus: ".$err["httpStatus"]
             ."\n httpMsg: ".$err["httpMsg"]
@@ -146,20 +174,21 @@ $callback2 = function($err, $status, $charge) : void {
     }
 };
 
-$pay->chargeBoleto($boleto, $callback2);
+$pay->charge($boleto, $callback2);
 
-$id;
+$id = "";
 
 // Retorno de função
-$res = $pay->chargeBoleto($boleto);
+$res = $pay->charge($boleto);
 
 if (isset($res["status"])) {
     if ($res["status"] == AditumPayments\ApiSDK\ChargeStatus::PRE_AUTHORIZED) echo "PRÉ AUTORIZADO!\n";
     $id = $res["charge"]->id;
 } else {
-    echo "httStatus: ".$res["httpStatus"]
-    ."\n httpMsg: ".$res["httpMsg"]
-    ."\n";
+    if ($res != NULL)
+        echo "httStatus: ".$res["httpStatus"]
+            ."\n httpMsg: ".$res["httpMsg"]
+            ."\n";
 }
 
 
@@ -187,7 +216,8 @@ if (isset($res["status"])) {
     echo $res["status"]."\n";
 } else {
     echo "httStatus: ".$res["httpStatus"]
-    ."\n httpMsg: ".$res["httpMsg"]
-    ."\n";
+        ."\n httpMsg: ".$res["httpMsg"]
+        ."\n";
 }
+
 */

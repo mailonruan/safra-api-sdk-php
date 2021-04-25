@@ -11,9 +11,13 @@ class Transactions {
     private $instructions = "";
     
     public $card = NULL;
+    public $fine = NULL;
+    public $discount = NULL;
 
     public function __construct() {
         $this->card = new Card;
+        $this->fine = new Fine;
+        $this->discount = new Discount;
     }
 
     public function setAcquirer($acquirer) {

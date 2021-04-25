@@ -3,6 +3,7 @@
 namespace AditumPayments\ApiSDK;
 
 class Customer {
+    private $id = "";
     private $name = "";
     private $email = "";
     private $documentType = 0;
@@ -14,6 +15,14 @@ class Customer {
     public function __construct() {
         $this->address = new Address;
         $this->phone = new Phone;
+    }
+
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    public function getId() {
+        return $this->id;
     }
 
     public function setName($name) {

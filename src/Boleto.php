@@ -2,17 +2,32 @@
 
 namespace AditumPayments\ApiSDK;
 
-class Boleto extends Charge{
+class Boleto extends Charge {
+    public const CHARGE_TYPE = "Boleto";
+
+    private $deadline;
 
     public function __construct() {
         $this->customer = new Customer;
         $this->transactions = new Transactions;
     }
 
-    public function toJson() {
-        $dateTime = new \DateTime('NOW');
+    public function setDeadline($deadline) {
+        $this->deadline = $deadline;
+    }
 
-        return json_encode(array(
+    public function getDeadline() {
+        return $this->deadline;
+    }
+
+    public function toString() {
+        $dateTimeFine = new \DateTime('NOW');
+        $dateTimeFine->modify("+{$this->transactions->fine->getStartDate()} day");
+
+        $dateTimeDiscount = new \DateTime('NOW');
+        $dateTimeDiscount->modify("+{$this->transactions->discount->getDeadline()} day");
+        
+        return array(
             "charge" => array(
                 "customer" => array(
                     "name" => $this->customer->getName(),
@@ -39,12 +54,26 @@ class Boleto extends Charge{
                 "transactions" => [
                     array(
                         "amount" => $this->transactions->getAmount(),
-                        "instructions" => $this->transactions->getInstructions()
+                        "instructions" => $this->transactions->getInstructions(),
+                        "fine" => array(
+                            "startDate" => $dateTimeFine->format('Y-m-d'),
+                            "amount" => $this->transactions->fine->getAmount(),
+                            "interest" => $this->transactions->fine->getInterest()
+                        ),
+                        "discount" => array(
+                            "type" => $this->transactions->discount->getType(),
+                            "amount" => $this->transactions->discount->getAmount(),
+                            "deadline" => $dateTimeDiscount->format('Y-m-d')
+                        )
                     ),
                 ],
                 "source" => 1,
-                "deadline" => $dateTime->format('Y-m-d')
+                "deadline" => $this->getDeadline()
             ),
-        ));
+        );
+    }
+
+    public function toJson() {
+        return json_encode($this->toString());
     }
 }

@@ -10,12 +10,36 @@ class Payment {
         $this->config = ($objectConfig) ? $objectConfig : Configuration::getInstance();
     }
 
+    public function charge($data, ...$callBack) {
+        switch($data::CHARGE_TYPE) {
+            case "Authorization":
+                return $this->chargeAuthorization($data, ...$callBack);
+            case "Boleto":
+                return $this->chargeBoleto($data, ...$callBack);
+            case "Undefined":
+                echo "Payment::charge = Defina o tipo de transação\n";
+                if (count($callBack)) $callBack[0](NULL, NULL, NULL);
+                return NULL;
+                break;
+            default:
+                echo "Payment::charge = Undefined charge type\n";
+                if (count($callBack)) $callBack[0](NULL, NULL, NULL);
+                return NULL;
+        }
+    }
+
     public function chargeAuthorization($data, ...$callBack) {
         $ch = curl_init();
 
+        $url = "{$this->config->getUrl()}charge/authorization";
+
+        echo "Payment::chargeAuthorization = Url de requisição {$url}\n";
+        echo "Payment::chargeAuthorization = Body da requisição:\n";
+        var_dump($data->toString());
+
         curl_setopt_array($ch, [
             CURLOPT_POST => 1,
-            CURLOPT_URL => "{$this->config->getUrl()}charge/authorization",
+            CURLOPT_URL => $url,
             CURLOPT_HTTPHEADER => [
                 "Content-Type: application/json",
                 "Authorization: Bearer {$this->config->getToken()}"
@@ -62,6 +86,12 @@ class Payment {
 
     public function chargeBoleto($data, ...$callBack) {
         $ch = curl_init();
+
+        $url = "{$this->config->getUrl()}charge/boleto";
+
+        echo "Payment::chargeBoleto = Url de requisição {$url}\n";
+        echo "Payment::chargeBoleto = Body da requisição:\n";
+        var_dump($data->toString());
 
         curl_setopt_array($ch, [
             CURLOPT_POST => 1,
