@@ -25,8 +25,8 @@ class Boleto extends Charge {
         $dateTimeFine->modify("+{$this->transactions->fine->getStartDate()} day");
 
         $dateTimeDiscount = new \DateTime('NOW');
-        $dateTimeDiscount->modify("+{$this->transactions->discount->getDeadline()} day");
-        
+        $dateTimeDiscount->modify("-{$this->transactions->discount->getDeadline()} day");
+
         return array(
             "charge" => array(
                 "customer" => array(

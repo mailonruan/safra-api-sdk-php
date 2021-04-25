@@ -226,6 +226,15 @@ AditumPayments\ApiSDK\DocumentType::CPF;
 AditumPayments\ApiSDK\DocumentType::CNPJ;
 ```
 
+# DiscountType
+### Tipos de documentos
+```php
+AditumPayments\ApiSDK\DiscountType::UNDEFINED;
+AditumPayments\ApiSDK\DiscountType::PERCENTUAL;
+AditumPayments\ApiSDK\DiscountType::FIXED;
+AditumPayments\ApiSDK\DiscountType::DAILY;
+```
+
 #
 
 ## Charge: object abstract
@@ -235,6 +244,7 @@ AditumPayments\ApiSDK\DocumentType::CNPJ;
 ```php
 $charge = AditumPayments\ApiSDK\Authorization;
 
+$charge->customer->setId('000001'); // O ID do comprador.
 $charge->customer->setName('fulano'); // Grava o nome do comprador.
 $charge->customer->setEmail('ceres'); //Guarda o email do comprador
 $charge->customer->setDocumentType(AditumPayments\ApiSDK\DocumentType::CPF);
@@ -292,6 +302,24 @@ $charge->transactions->card->setExpirationMonth(10); // Mês de expiração do c
 $charge->transactions->card->setExpirationYear(2022); // Ano de expiração do cartão
 ```
 
+### Transactions->fine: object()
+```php
+$charge = AditumPayments\ApiSDK\Authorization;
+
+$charge->transactions->fine->setStartDate("2"); // Data em dias que a multa começará a contar a partir da dara de vencimento definida. Ex: 2021-04-26, data de multa fica 2021-04-28
+$charge->transactions->fine->setAmount(300); // Valor extra a ser pago após a data de vencimento.
+$charge->transactions->fine->setInterest(10); // Os juros financeiros representam um valor em porcentagem que será calculado todos os dias após a data de vencimento.
+```
+
+### Transactions->discount: object()
+```php
+$charge = AditumPayments\ApiSDK\Authorization;
+
+$charge->transactions->discount->setType(AditumPayments\ApiSDK\DiscountType::PERCENTUAL);
+$charge->transactions->discount->setAmount(20); // Valor em centavos ou porcentagem com base no tipo de desconto.
+$charge->transactions->discount->setDeadline("1"); // Data limite em dias que o desconto pode ser aplicado basea na data de vencimento. Ex: Vencimento 2021-04-26, o valor do discount->deadline sendo 2 a data fica 2021-04-24
+```
+
 ### getBrandCardBin(string`(opcional)`) : string
 Retorna o nome da bandeira do cartão, baseado no número do cartão guardado.
 ```php
@@ -331,6 +359,22 @@ $authorization = new AditumPayments\ApiSDK\Authorization;
 $authorization->customer->setName("fulano");
 $authorization->customer->setEmail("fulano@aditum.co");
 
+// Customer->address
+$authorization->customer->address->setStreet("Avenida Salvador");
+$authorization->customer->address->setNumber("5401");
+$authorization->customer->address->setNeighborhood("Recreio dos bandeirantes");
+$authorization->customer->address->setCity("Rio de janeiro");
+$authorization->customer->address->setState("RJ");
+$authorization->customer->address->setCountry("BR");
+$authorization->customer->address->setZipcode("2279714");
+$authorization->customer->address->setComplement("");
+
+// Customer->phone
+$authorization->customer->phone->setCountryCode("55");
+$authorization->customer->phone->setAreaCode("21");
+$authorization->customer->phone->setNumber("98491715");
+$authorization->customer->phone->setType(AditumPayments\ApiSDK\PhoneType::MOBILE);
+
 // Transactions
 $authorization->transactions->setAmount(100);
 $authorization->transactions->setPaymentType(AditumPayments\ApiSDK\PaymentType::CREDIT);
@@ -367,6 +411,22 @@ $authorization = new AditumPayments\ApiSDK\Authorization;
 $authorization->customer->setName("fulano");
 $authorization->customer->setEmail("fulano@aditum.co");
 
+// Customer->address
+$authorization->customer->address->setStreet("Avenida Salvador");
+$authorization->customer->address->setNumber("5401");
+$authorization->customer->address->setNeighborhood("Recreio dos bandeirantes");
+$authorization->customer->address->setCity("Rio de janeiro");
+$authorization->customer->address->setState("RJ");
+$authorization->customer->address->setCountry("BR");
+$authorization->customer->address->setZipcode("2279714");
+$authorization->customer->address->setComplement("");
+
+// Customer->phone
+$authorization->customer->phone->setCountryCode("55");
+$authorization->customer->phone->setAreaCode("21");
+$authorization->customer->phone->setNumber("98491715");
+$authorization->customer->phone->setType(AditumPayments\ApiSDK\PhoneType::MOBILE);
+
 // Transactions
 $authorization->transactions->setAmount(100);
 $authorization->transactions->setPaymentType(AditumPayments\ApiSDK\PaymentType::CREDIT);
@@ -400,6 +460,8 @@ Faz uma transação por boleto.
 $pay = AditumPayments\ApiSDK\Payment;
 $boleto = new AditumPayments\ApiSDK\Boleto;
 
+$boleto->setDeadline("2021-04-26");
+
 // Customer
 $boleto->customer->setName("fulano");
 $boleto->customer->setEmail("fulano@aditum.co");
@@ -425,6 +487,16 @@ $boleto->customer->phone->setType(AditumPayments\ApiSDK\PhoneType::MOBILE);
 // Transactions
 $boleto->transactions->setAmount(30000);
 $boleto->transactions->setInstructions("Crédito de teste");
+
+// Transactions->fine
+$boleto->transactions->fine->setStartDate("2");
+$boleto->transactions->fine->setAmount(300);
+$boleto->transactions->fine->setInterest(10);
+
+// Transactions->discount
+$boleto->transactions->discount->setType(AditumPayments\ApiSDK\DiscountType::FIXED);
+$boleto->transactions->discount->setAmount(200);
+$boleto->transactions->discount->setDeadline("1");
 
 $callback = function($err, $status, $charge) : void {
 	if ($err == NULL) {
@@ -444,6 +516,8 @@ $pay->charge($boleto, $callback);
 $pay = AditumPayments\ApiSDK\Payment;
 $boleto = new AditumPayments\ApiSDK\Boleto;
 
+$boleto->setDeadline("2021-04-26");
+
 // Customer
 $boleto->customer->setName("fulano");
 $boleto->customer->setEmail("fulano@aditum.co");
@@ -469,6 +543,17 @@ $boleto->customer->phone->setType(AditumPayments\ApiSDK\PhoneType::MOBILE);
 // Transactions
 $boleto->transactions->setAmount(30000);
 $boleto->transactions->setInstructions("Crédito de teste");
+$boleto->transactions->fine->setStartDate("2024-12-12");
+
+// Transactions->fine
+$boleto->transactions->fine->setStartDate("2");
+$boleto->transactions->fine->setAmount(300);
+$boleto->transactions->fine->setInterest(10);
+
+// Transactions->discount
+$boleto->transactions->discount->setType(AditumPayments\ApiSDK\DiscountType::FIXED);
+$boleto->transactions->discount->setAmount(200);
+$boleto->transactions->discount->setDeadline("1");
 
 $res = $pay->charge($boleto);
 
