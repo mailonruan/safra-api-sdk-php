@@ -26,7 +26,7 @@ Requisitos
  ### Instalação via Composer
 > Para baixar e instalar o Composer no seu ambiente acesse https://getcomposer.org/download/ e caso tenha dúvidas de como utilizá-lo consulte a [documentação oficial do Composer].
 
-É possível instalar a biblioteca aditum-api-sdk-php/([aditum-payments/aditum-api-sdk-php/]) via Composer de duas maneiras:
+É possível instalar a biblioteca aditum-api-sdk-php([aditum-payments/aditum-api-sdk-php](aditum-payments/aditum-api-sdk-php)) via Composer de duas maneiras:
 
 - Executando o comando para adicionar a dependência automaticamente
   ```
