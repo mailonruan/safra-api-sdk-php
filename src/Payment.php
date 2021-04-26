@@ -2,6 +2,8 @@
 
 namespace AditumPayments\ApiSDK;
 
+use AditumPayments\ApiSDK\Config\Configuration;
+
 class Payment {
 
     private $config;
@@ -35,7 +37,6 @@ class Payment {
 
         echo "Payment::chargeAuthorization = Url de requisição {$url}\n";
         echo "Payment::chargeAuthorization = Body da requisição:\n";
-        var_dump($data->toString());
 
         curl_setopt_array($ch, [
             CURLOPT_POST => 1,
@@ -90,8 +91,6 @@ class Payment {
         $url = "{$this->config->getUrl()}charge/boleto";
 
         echo "Payment::chargeBoleto = Url de requisição {$url}\n";
-        echo "Payment::chargeBoleto = Body da requisição:\n";
-        var_dump($data->toString());
 
         curl_setopt_array($ch, [
             CURLOPT_POST => 1,

@@ -1,11 +1,15 @@
 <?php
 
-namespace AditumPayments\ApiSDK;
+namespace AditumPayments\ApiSDK\Domains;
+
+use AditumPayments\ApiSDK\Config\Configuration;
 
 class Boleto extends Charge {
     public const CHARGE_TYPE = "Boleto";
 
-    private $deadline;
+    private $deadline = NULL;
+    private $FineStartDate = NULL;
+    private $discountDeadline = NULL;
 
     public function __construct() {
         $this->customer = new Customer;
@@ -13,7 +17,7 @@ class Boleto extends Charge {
     }
 
     public function setDeadline($deadline) {
-        $this->deadline = $deadline;
+        $this->dealine = $deadline;
     }
 
     public function getDeadline() {
@@ -21,11 +25,42 @@ class Boleto extends Charge {
     }
 
     public function toString() {
-        $dateTimeFine = new \DateTime('NOW');
-        $dateTimeFine->modify("+{$this->transactions->fine->getStartDate()} day");
+        $config = Configuration::getInstance();
 
-        $dateTimeDiscount = new \DateTime('NOW');
-        $dateTimeDiscount->modify("-{$this->transactions->discount->getDeadline()} day");
+        if ($this->deadline == NULL) {
+            $this->deadline = new \DateTime('NOW');
+            $this->deadline->modify("+{$config->getDaysToExpire()} day");
+            $this->deadline = $this->deadline->format('Y-m-d');
+        }
+
+        if ($this->transactions->fine->getStartDate() == NULL) {
+            $this->FineStartDate = new \DateTime('NOW');
+            $this->FineStartDate->modify("+{$config->getDaysToFine()} day");
+            $this->transactions->fine->setStartDate($this->FineStartDate->format('Y-m-d'));
+        }
+
+        if ($this->transactions->fine->getAmount() == NULL) {
+            $this->transactions->fine->setAmount($config->getFineAmount());
+        }
+
+
+        if ($this->transactions->fine->getInterest() == NULL) {
+            $this->transactions->fine->setInterest($config->getFineInterest());
+        }
+
+        if ($this->transactions->discount->getType() == NULL) {
+            $this->transactions->discount->setType($config->getDiscountType());
+        }
+
+        if ($this->transactions->discount->getAmount() == NULL) {
+            $this->transactions->discount->setAmount($config->getDiscountAmount());
+        }
+
+        if ($this->transactions->discount->getDeadline() == NULL) {
+            $this->discountDeadline = new \DateTime('NOW');
+            $this->discountDeadline->modify("- {$config->getDaysToDiscount()} day");
+            $this->transactions->discount->setDeadline($this->discountDeadline->format('Y-m-d'));
+        }
 
         return array(
             "charge" => array(
@@ -56,19 +91,19 @@ class Boleto extends Charge {
                         "amount" => $this->transactions->getAmount(),
                         "instructions" => $this->transactions->getInstructions(),
                         "fine" => array(
-                            "startDate" => $dateTimeFine->format('Y-m-d'),
+                            "startDate" => $this->transactions->fine->getStartDate(),
                             "amount" => $this->transactions->fine->getAmount(),
                             "interest" => $this->transactions->fine->getInterest()
                         ),
                         "discount" => array(
                             "type" => $this->transactions->discount->getType(),
                             "amount" => $this->transactions->discount->getAmount(),
-                            "deadline" => $dateTimeDiscount->format('Y-m-d')
+                            "deadline" => $this->transactions->discount->getDeadline()
                         )
                     ),
                 ],
                 "source" => 1,
-                "deadline" => $this->getDeadline()
+                "deadline" => $this->deadline
             ),
         );
     }

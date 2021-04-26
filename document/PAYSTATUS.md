@@ -1,5 +1,35 @@
-### chargeStatus(string`(chargeId)`,  callback`(opcional)`) : array()
+# Status do pagamento
 Pega as informações de uma cobrança pelo seu GUID ID ou NSU..
+
+**Uso de retorno da função**
+```php
+$pay = AditumPayments\ApiSDK\Payment;
+
+// Implementação do boleto...
+
+$id = "";
+
+$res = $pay->charge($boleto);
+if (isset($res["status"])) {
+	$id = $res["charge"]->id;
+} else {
+	echo  "httStatus: ".$res["httpStatus"]
+	."\n httpMsg: ".$res["httpMsg"]
+	."\n";
+}
+
+$res = $pay->chargeStatus($id);
+
+if (isset($res["status"])) {
+	echo  $res["status"]."\n";
+} else {
+	echo  "httStatus: ".$res["httpStatus"]
+	."\n httpMsg: ".$res["httpMsg"]
+	."\n";
+}
+```
+
+===========================================================
 
 **Uso de callback:**
 ```php
@@ -8,7 +38,8 @@ $pay = AditumPayments\ApiSDK\Payment;
 // Implementação do boleto...
 
 $id = "";
-$res = $pay->chargeBoleto($boleto);
+
+$res = $pay->charge($boleto);
 if (isset($res["status"])) {
 	$id = $res["charge"]->id;
 } else {
@@ -29,29 +60,3 @@ $callback = function($err, $status, $charge) : void {
 
 $pay->chargeStatus($id, $callback);
 ```
-
-**Uso de retorno da função**
-```php
-$pay = AditumPayments\ApiSDK\Payment;
-
-// Implementação do boleto...
-
-$id = "";
-$res = $pay->chargeBoleto($boleto);
-if (isset($res["status"])) {
-	$id = $res["charge"]->id;
-} else {
-	echo  "httStatus: ".$res["httpStatus"]
-	."\n httpMsg: ".$res["httpMsg"]
-	."\n";
-}
-
-$res = $pay->chargeStatus($id);
-
-if (isset($res["status"])) {
-	echo  $res["status"]."\n";
-} else {
-	echo  "httStatus: ".$res["httpStatus"]
-	."\n httpMsg: ".$res["httpMsg"]
-	."\n";
-}

@@ -1,11 +1,11 @@
 <?php
 
-namespace AditumPayments\ApiSDK;
+namespace AditumPayments\ApiSDK\Domains;
 
 class Fine {
-    private $startDate = "1";
-    private $amount = 0;
-    private $interest = 0;
+    private $startDate = NULL;
+    private $amount = NULL;
+    private $interest = NULL;
 
     public function setStartDate($startDate) {
         $this->startDate = $startDate;

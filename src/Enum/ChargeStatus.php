@@ -1,6 +1,6 @@
 <?php
 
-namespace AditumPayments\ApiSDK;
+namespace AditumPayments\ApiSDK\Enum;
 
 abstract class ChargeStatus {
     public const AUTHORIZED         = "Authorized";

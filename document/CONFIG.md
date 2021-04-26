@@ -1,74 +1,22 @@
 # Configuration
 
-Dentro dessa classe podemos obter informações como a url de desenvolvimento e produção.
+Dentro dessa classe podemos definir e obter informações como a url de desenvolvimento e produção, merchanToken e CNPJ.
 
-### setUrl():
-Grava a `url` defina pelo usuário.
 ```php
-$config = AditumPayments\ApiSDK\Configuration::getInstance();
-echo $config->setUrl();
-```
+$config = AditumPayments\ApiSDK\Config\Configuration::getInstance();
 
-### getUrl() : string
-Retorna a `url` defina pelo usuário, se não estiver definida é retornado a url de produção.
-```php
-$config = AditumPayments\ApiSDK\Configuration::getInstance();
-echo $config->getUrl();
-```
+$config->setUrl($config::DEV_URL); // Caso não defina a url, será usada de produção
+$config->setCnpj("83032272000109");
+$config->setMerchantToken("mk_P1kT7Rngif1Xuylw0z96k3");
 
-### getProdUrl() : string
-Retorna a `url` de produção.
-```php
-$config = AditumPayments\ApiSDK\Configuration::getInstance();
-echo $config->getProdUrl();
-```
+//Boleto
+$config->setDaysToExpire("1");
 
-### getDevUrl() : string
-Retorna a `url` de desenvolvimento.
-```php
-$config = AditumPayments\ApiSDK\Configuration::getInstance();
-echo $config->getDevUrl();
-```
+$config->setDaysToFine("2");
+$config->setFineAmount("300");
+$config->setFineInterest(10);
 
-### setToken(string) 
-Grava o `token` para ser usado em futuras requisições.
-```php
-$config = AditumPayments\ApiSDK\Configuration::getInstance();
-$config->setToken('1413413513564t32fg3g3g');
-```
-
-### getToken() : string
-Retorna o `token` gravado.
-```php
-$config = AditumPayments\ApiSDK\Configuration::getInstance();
-echo $config->getToken();
-```
-
-### setCnpj(string)
-Grava o `cnpj` do estabelecimento.
-```php
-$config = AditumPayments\ApiSDK\Configuration::getInstance();
-$config->setCnpj('3141413441341341341');
-
-```
-
-### getCnpj() : string
-Retorna o `cnpj` gravado.
-```php
-$config = AditumPayments\ApiSDK\Configuration::getInstance();
-echo $config->getCnpj();
-```
-
-### setMerchantToken(string)
-Grava o `merchantToken` do estabelecimento.
-```php
-$config = AditumPayments\ApiSDK\Configuration::getInstance();
-$config->setMerchantToken('41341341341');
-```
-
-### getMerchantToken() : string
-Retorna o `merchantToken` gravado.
-```php
-$config = AditumPayments\ApiSDK\Configuration::getInstance();
-echo $config->getMerchantToken();
+$config->setDiscountType(AditumPayments\ApiSDK\Enum\DiscountType::FIXED);
+$config->setDiscountAmount(200);
+$config->setDaysToDiscount(1);
 ```

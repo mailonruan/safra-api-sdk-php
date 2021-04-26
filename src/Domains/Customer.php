@@ -1,6 +1,6 @@
 <?php
 
-namespace AditumPayments\ApiSDK;
+namespace AditumPayments\ApiSDK\Domains;
 
 class Customer {
     private $id = "";

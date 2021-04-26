@@ -1,6 +1,6 @@
 <?php
 
-namespace AditumPayments\ApiSDK;
+namespace AditumPayments\ApiSDK\Enum;
 
 abstract class DiscountType {
     public const UNDEFINED  = 0;

@@ -1,6 +1,8 @@
 <?php
 
-namespace AditumPayments\ApiSDK;
+namespace AditumPayments\ApiSDK\Domains;
+
+use AditumPayments\ApiSDK\Config\Configuration;
 
 class Authorization extends Charge {
 

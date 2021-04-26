@@ -1,11 +1,11 @@
 <?php
 
-namespace AditumPayments\ApiSDK;
+namespace AditumPayments\ApiSDK\Domains;
 
 class Discount {
-    private $type = 0;
-    private $amount = 0;
-    private $deadline = "0";
+    private $type = NULL;
+    private $amount = NULL;
+    private $deadline = NULL;
 
     public function setType($type) {
         $this->type = $type;

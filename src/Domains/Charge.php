@@ -1,5 +1,5 @@
 <?php
-namespace AditumPayments\ApiSDK;
+namespace AditumPayments\ApiSDK\Domains;
 
 abstract class Charge {
     public $customer = NULL;

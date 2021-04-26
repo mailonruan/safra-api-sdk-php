@@ -1,6 +1,6 @@
 <?php
 
-namespace AditumPayments\ApiSDK;
+namespace AditumPayments\ApiSDK\Enum;
 
 abstract class PhoneType {
     public const RESIDENCIAL  = 1;
