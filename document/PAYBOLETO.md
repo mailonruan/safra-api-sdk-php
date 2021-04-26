@@ -34,17 +34,16 @@ $boleto->customer->phone->setType(AditumPayments\ApiSDK\Enum\PhoneType::MOBILE);
 // Transactions
 $boleto->transactions->setAmount(30000); 
 $boleto->transactions->setInstructions("Crédito de teste");
-$boleto->transactions->fine->setStartDate("2024-12-12");
 
 // Transactions->fine
-$boleto->transactions->fine->setStartDate("2"); // Se fez a configuração no Config não é obrigatório
-$boleto->transactions->fine->setAmount(300); // Se fez a configuração no Config não é obrigatório
-$boleto->transactions->fine->setInterest(10); // Se fez a configuração no Config não é obrigatório
+$boleto->transactions->fine->setStartDate("2024-12-12"); // Opcional
+$boleto->transactions->fine->setAmount(300); // Opcional
+$boleto->transactions->fine->setInterest(10); // Opcional
 
 // Transactions->discount
-$boleto->transactions->discount->setType(AditumPayments\ApiSDK\Enum\DiscountType::FIXED); // Se fez a configuração no Config não é obrigatório
-$boleto->transactions->discount->setAmount(200); // Se fez a configuração no Config não é obrigatório
-$boleto->transactions->discount->setDeadline("1"); // Se fez a configuração no Config não é obrigatório
+$boleto->transactions->discount->setType(AditumPayments\ApiSDK\Enum\DiscountType::FIXED); // Opcional
+$boleto->transactions->discount->setAmount(200); // Opcional
+$boleto->transactions->discount->setDeadline("2024-12-12");  // Opcional
 
 $res = $pay->charge($boleto);
 
@@ -92,14 +91,14 @@ $boleto->transactions->setAmount(30000);
 $boleto->transactions->setInstructions("Crédito de teste");
 
 // Transactions->fine
-$boleto->transactions->fine->setStartDate("2"); // Se fez a configuração no Config não é obrigatório
-$boleto->transactions->fine->setAmount(300); // Se fez a configuração no Config não é obrigatório
-$boleto->transactions->fine->setInterest(10); // Se fez a configuração no Config não é obrigatório
+$boleto->transactions->fine->setStartDate("2024-12-12"); // Opcional
+$boleto->transactions->fine->setAmount(300); // Opcional
+$boleto->transactions->fine->setInterest(10); // Opcional
 
 // Transactions->discount
-$boleto->transactions->discount->setType(AditumPayments\ApiSDK\Enum\DiscountType::FIXED); // Se fez a configuração no Config não é obrigatório
-$boleto->transactions->discount->setAmount(200); // Se fez a configuração no Config não é obrigatório
-$boleto->transactions->discount->setDeadline("1"); // Se fez a configuração no Config não é obrigatório
+$boleto->transactions->discount->setType(AditumPayments\ApiSDK\Enum\DiscountType::FIXED); // Opcional
+$boleto->transactions->discount->setAmount(200); // Opcional
+$boleto->transactions->discount->setDeadline("2024-12-12"); // Opcional
 
 $callback = function($err, $status, $charge) : void {
 	if ($err == NULL) {

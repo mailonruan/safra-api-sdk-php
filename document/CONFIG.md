@@ -12,11 +12,13 @@ $config->setMerchantToken("mk_P1kT7Rngif1Xuylw0z96k3");
 //Boleto
 $config->setDaysToExpire("1");
 
-$config->setDaysToFine("2");
-$config->setFineAmount("300");
-$config->setFineInterest(10);
+// Opcional
+$config->setDaysToFine("2"); 
+$config->setFineAmount("300"); 
+$config->setFineInterest(10); 
 
-$config->setDiscountType(AditumPayments\ApiSDK\Enum\DiscountType::FIXED);
+// Opcional
+$config->setDiscountType(AditumPayments\ApiSDK\Enum\DiscountType::FIXED); 
 $config->setDiscountAmount(200);
 $config->setDaysToDiscount(1);
 ```

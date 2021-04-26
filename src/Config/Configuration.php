@@ -12,13 +12,13 @@ class Configuration {
     // Boleto
     private $daysToExpire = "1";
 
-    private $daysToFine = "1";
-    private $fineAmount = "0";
+    private $daysToFine = NULL;
+    private $fineAmount = NULL;
     private $fineInterest = NULL;
 
     private $discountType = NULL;
-    private $discountAmount = "0";
-    private $daysToDiscount = "1";
+    private $discountAmount = NULL;
+    private $daysToDiscount = NULL;
 
     public const PROD_URL = "https://payment.aditum.com.br/v2/";
     public const DEV_URL  = "https://payment-dev.aditum.com.br/v2/";

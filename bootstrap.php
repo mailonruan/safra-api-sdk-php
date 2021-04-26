@@ -19,9 +19,9 @@ $config->setDaysToFine("2");
 $config->setFineAmount("300");
 $config->setFineInterest(10);
 
-$config->setDiscountType(AditumPayments\ApiSDK\Enum\DiscountType::FIXED);
-$config->setDiscountAmount(200);
-$config->setDaysToDiscount(1);
+// $config->setDiscountType(AditumPayments\ApiSDK\Enum\DiscountType::FIXED);
+// $config->setDiscountAmount(200);
+// $config->setDaysToDiscount(1);
 
 // ----------------------------------------------------AUTENTICAÇÃO --------------------------------------------------------
 // Uso de callback
@@ -129,7 +129,7 @@ if (isset($res["status"])) {
         ."\n";
 }
 
-/*
+
 // --------------------------------------------------BOLETO-------------------------------------------------------------
 
 $boleto = new AditumPayments\ApiSDK\Domains\Boleto;
@@ -232,4 +232,3 @@ if (isset($res["status"])) {
         ."\n";
 }
 
-*/
