@@ -50,8 +50,7 @@ if (isset($res["status"])) {
 		."\n";
 }
 ```
-
-===========================
+#
 
 **Uso de callback:**
 ```php
