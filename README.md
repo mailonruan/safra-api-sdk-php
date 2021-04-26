@@ -52,10 +52,10 @@ Requisitos
  Como usar
  ---------
 Pode seguir os passos a seguir:
-- [Configuração do pacote](https://github.com/aditum-payments/aditum-api-sdk-php/master/document/CONFIG.md)
-- [Pagamento por cartão](https://github.com/aditum-payments/aditum-api-sdk-php/master/document/PAYCC.md)
-- [Pagamento por boleto](https://github.com/aditum-payments/aditum-api-sdk-php/master/document/PAYBOLETO.md)
-- [Consultar transação](https://github.com/aditum-payments/aditum-api-sdk-php/master/document/PAYSTATUS.md)
-- [Enum](https://github.com/aditum-payments/aditum-api-sdk-php/master/document/ENUM.md)
+- [Configuração do pacote](https://github.com/aditum-payments/aditum-api-sdk-php/blob/main/document/CONFIG.md)
+- [Pagamento por cartão](https://github.com/aditum-payments/aditum-api-sdk-php/blob/main/document/PAYCC.md)
+- [Pagamento por boleto](https://github.com/aditum-payments/aditum-api-sdk-php/blob/main/document/PAYBOLETO.md)
+- [Consultar transação](https://github.com/aditum-payments/aditum-api-sdk-php/blob/main/document/PAYSTATUS.md)
+- [Enum](https://github.com/aditum-payments/aditum-api-sdk-php/blob/main/document/ENUM.md)
 
 
