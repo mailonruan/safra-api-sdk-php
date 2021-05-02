@@ -24,10 +24,33 @@ class Discount {
     }
 
     public function setDeadline($deadline) {
-        $this->deadline = $deadline;
+        if (strpos($deadline, '/') !== false)
+            $this->dealine = $deadline;
+        else {
+            $this->deadline = new \DateTime('NOW');
+            $this->deadline->modify("- {$deadline} day");
+            $this->deadline = $this->deadline->format('Y-m-d');
+        }
     }
 
     public function getDeadline() {
         return $this->deadline;
+    }
+
+
+    public function toString() {
+        if ($this->getType() == NULL) return "";
+        if ($this->getAmount() == NULL) return "";
+        if ($this->getDeadline() == NULL) return "";
+
+        return array(
+            "type" => $this->getType(),
+            "amount" => $this->getAmount(),
+            "deadline" => $this->getDeadline()
+    );
+    }
+
+    public function toJson() {
+        return json_encode($this->toString());
     }
 }

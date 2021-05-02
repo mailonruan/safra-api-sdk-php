@@ -51,11 +51,14 @@ Requisitos
  
  Como usar
  ---------
-Pode seguir os passos a seguir:
+O diretório *[public](https://github.com/aditum-payments/aditum-api-sdk-php/tree/main/public)* contém exemplos das mais diversas chamadas à API da Aditum e o diretório *[src](https://github.com/aditum-payments/aditum-api-sdk-php/tree/main/src)* contém a biblioteca propriamente dita (código fonte).
+
+Seguir os passos a seguir:
 - [Configuração do pacote](https://github.com/aditum-payments/aditum-api-sdk-php/blob/main/document/CONFIG.md)
 - [Pagamento por cartão](https://github.com/aditum-payments/aditum-api-sdk-php/blob/main/document/PAYCC.md)
 - [Pagamento por boleto](https://github.com/aditum-payments/aditum-api-sdk-php/blob/main/document/PAYBOLETO.md)
 - [Consultar transação](https://github.com/aditum-payments/aditum-api-sdk-php/blob/main/document/PAYSTATUS.md)
+- [Recursos de ajuda](https://github.com/aditum-payments/aditum-api-sdk-php/blob/main/document/HELPER.md)
 - [Enum](https://github.com/aditum-payments/aditum-api-sdk-php/blob/main/document/ENUM.md)
 
 

@@ -1,5 +1,7 @@
-# Status do pagamento
-Pega as informações de uma cobrança pelo seu GUID ID ou NSU..
+## Utils
+Responsável por criar ter funcções de ajuda para a lib.
+
+*billingInformation*
 
 ```php
 AditumPayments\ApiSDK\Configuration::initialize();

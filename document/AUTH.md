@@ -1,12 +1,14 @@
 # Authentication
-
 A autenticação é a forma que deve ser utilizada para gerar um Token de acesso, para que você consiga utilizar os endpoints.
 
-**Uso de retorno da função**
 ```php
-$auth = new AditumPayments\ApiSDK\Authentication;
+AditumPayments\ApiSDK\Configuration::initialize();
 
-$res = $auth->requestToken();
+AditumPayments\ApiSDK\Configuration::setUrl(AditumPayments\ApiSDK\Configuration::DEV_URL); // Caso não defina a url, será usada de produção
+AditumPayments\ApiSDK\Configuration::setCnpj("83032272000109");
+AditumPayments\ApiSDK\Configuration::setMerchantToken("mk_P1kT7Rngif1Xuylw0z96k3");
+
+$res = AditumPayments\ApiSDK\Configuration::login();
 
 if (isset($res["token"])) {
 	echo  $res["token"]."\n";
@@ -16,23 +18,4 @@ if (isset($res["token"])) {
 		."\n httpMsg: ".$res["httpMsg"]
 		."\n";
 }
-```
-#
-
-**Uso de callback:**
-```php
-$auth = new AditumPayments\ApiSDK\Authentication;
-
-$callback = function($err, $token, $refreshToken) : void {
-	if ($err == NULL) {
-		echo  $token."\n";
-
-	} else {
-		echo  "httStatus: ".$err["httpStatus"]
-			."\nhttpMsg: ".$err["httpMsg"]
-			."\n";
-	}
-};
-
-$auth->requestToken($callback);
 ```

@@ -1,29 +1,29 @@
 <?php
 
-namespace AditumPayments\ApiSDK;
+namespace AditumPayments\ApiSDK\Controller;
 
-use AditumPayments\ApiSDK\Config\Configuration;
+use AditumPayments\ApiSDK\Configuration;
 
-class Authentication {
-    private $config;
+class Login {
 
-    public function __construct($objectConfig = NULL) {
-        $this->config = ($objectConfig) ? $objectConfig : Configuration::getInstance();
-    }
+    public function requestToken($cnpj, $merchantToken, $url) {
+        echo "\n\n => Login::requestToken = Iniciando...\n";
 
-    public function requestToken(...$callBack) {
-        $merchantCredential = password_hash($this->config->getCnpj()."".$this->config->getMerchantToken(), PASSWORD_BCRYPT, [
+        $merchantCredential = password_hash($cnpj."".$merchantToken, PASSWORD_BCRYPT, [
             'cost' => 12,
         ]);
 
         $ch = curl_init();
 
+        echo "Login::requestToken = Merchant Credential {$merchantCredential}\n";
+        echo "Login::requestToken = Url de requisição {$url}\n";
+
         curl_setopt_array($ch, [
             CURLOPT_POST => 1,
-            CURLOPT_URL => "{$this->config->getUrl()}merchant/auth",
+            CURLOPT_URL => Configuration::getUrl()."merchant/auth",
             CURLOPT_HTTPHEADER => [
                 "Authorization: {$merchantCredential}",
-                "merchantCredential: {$this->config->getCnpj()}"
+                "merchantCredential: {$cnpj}"
             ],
             CURLOPT_TIMEOUT => 30,
             CURLOPT_RETURNTRANSFER => 1,
@@ -41,8 +41,6 @@ class Authentication {
                 "httpMsg" => $response, 
                 "code" => $errCode, 
                 "msg" => $errMsg);
-
-            if (count($callBack)) $callBack[0]($arrayError, NULL, NULL);
             
             return $arrayError;
         }
@@ -53,13 +51,9 @@ class Authentication {
 
         if ($responseJson->success != true) {
             $arrayError = array("code" => '-1', "httpMsg" => $responseJson->errors);
-            if (count($callBack)) $callBack[0]($arrayError, NULL, NULL); 
             return $arrayError;
         }
 
-        if (count($callBack))
-            $callBack[0](NULL, $responseJson->accessToken, $responseJson->refreshToken);
-        
         return array("token" => $responseJson->accessToken, "refreshToken" => $responseJson->refreshToken);
     }
 

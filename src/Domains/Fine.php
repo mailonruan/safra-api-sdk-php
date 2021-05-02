@@ -8,7 +8,13 @@ class Fine {
     private $interest = NULL;
 
     public function setStartDate($startDate) {
-        $this->startDate = $startDate;
+        if (strpos($startDate, '/') !== false)
+            $this->startDate = $startDate;
+        else {
+            $this->startDate = new \DateTime('NOW');
+            $this->startDate->modify("+{$startDate} day");
+            $this->startDate = $this->startDate->format('Y-m-d');
+        }
     }
 
     public function getStartDate() {
@@ -29,5 +35,21 @@ class Fine {
 
     public function getInterest() {
         return $this->interest;
+    }
+
+    public function toString() {
+        if ($this->getStartDate() == NULL) return "";
+        if ($this->getAmount() == NULL) return "";
+        if ($this->getInterest() == NULL) return "";
+
+        return array(
+            "startDate" => $this->getStartDate(),
+            "amount" => $this->getAmount(),
+            "interest" => $this->getInterest()
+        );
+    }
+
+    public function toJson() {
+        return json_encode($this->toString());
     }
 }

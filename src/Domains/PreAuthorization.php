@@ -2,13 +2,23 @@
 
 namespace AditumPayments\ApiSDK\Domains;
 
-class Authorization extends Charge {
+class PreAuthorization extends Charge {
 
-    public const CHARGE_TYPE = "Authorization";
+    public const CHARGE_TYPE = "PreAuthorization";
+
+    private $sessionId = "";
 
     public function __construct() {
         $this->customer = new Customer;
         $this->transactions = new Transactions;
+    }
+
+    public function setSessionId($sessionId) {
+        $this->sessionId = $sessionId;
+    }
+
+    public function getSessionId() {
+        return $this->sessionId;
     }
 
     public function toString() {
@@ -50,7 +60,8 @@ class Authorization extends Charge {
                     ),
                 ],
                 "source" => 1,
-                "capture" => false
+                "capture" => false,
+                "sessionId" => $this->getSessionId()
             ));
     }
 
