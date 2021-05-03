@@ -9,8 +9,6 @@ use AditumPayments\ApiSDK\Controller\PreAuthorization;
 
 class Gateway {
 
-    private $config;
-
     public function charge($data) {
         switch($data::CHARGE_TYPE) {
             case "Authorization":

@@ -15,15 +15,18 @@ class Login {
 
         $ch = curl_init();
 
+        $url = $url."merchant/auth";
+
         echo "Login::requestToken = Merchant Credential {$merchantCredential}\n";
         echo "Login::requestToken = Url de requisição {$url}\n";
 
         curl_setopt_array($ch, [
             CURLOPT_POST => 1,
-            CURLOPT_URL => Configuration::getUrl()."merchant/auth",
+            CURLOPT_URL => $url,
             CURLOPT_HTTPHEADER => [
                 "Authorization: {$merchantCredential}",
-                "merchantCredential: {$cnpj}"
+                "merchantCredential: {$cnpj}",
+                "Content-Length: 0"
             ],
             CURLOPT_TIMEOUT => 30,
             CURLOPT_RETURNTRANSFER => 1,

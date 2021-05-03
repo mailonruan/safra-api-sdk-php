@@ -1,9 +1,7 @@
-## Utils
-Responsável por criar ter funcções de ajuda para a lib.
+<?php
 
-*billingInformation*
+require  '../vendor/autoload.php';
 
-```php
 AditumPayments\ApiSDK\Configuration::initialize();
 AditumPayments\ApiSDK\Configuration::setUrl(AditumPayments\ApiSDK\Configuration::DEV_URL);
 AditumPayments\ApiSDK\Configuration::setCnpj("83032272000109");
@@ -15,6 +13,6 @@ if ($brandName == NULL) {
     echo "Authorization::toJson = Falha ao buscar nome da bandeira do cartão\n";
     return NULL;
 } else {
-    echo "\n\n".$brandName."\n";
+    echo "\n".$brandName."\n";
 }
-```
+
