@@ -21,7 +21,8 @@ abstract class Utils {
             CURLOPT_URL => $urlRequest,
             CURLOPT_HTTPHEADER => [
                 "Content-Type: application/json",
-                "Authorization: Bearer ".Configuration::getToken()
+                "Authorization: Bearer ".Configuration::getToken(),
+                "Content-Length: 0"
             ],
             CURLOPT_TIMEOUT => 30,
             CURLOPT_RETURNTRANSFER => 1,
