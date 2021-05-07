@@ -3,11 +3,12 @@
 namespace AditumPayments\ApiSDK\Controller;
 
 use AditumPayments\ApiSDK\Configuration;
+use AditumPayments\ApiSDK\Helper\Utils;
 
 class Login {
 
     public function requestToken($cnpj, $merchantToken, $url) {
-        echo "\n\n => Login::requestToken = Iniciando...\n";
+        Utils::log("\n\n => Login::requestToken = Iniciando...\n");
 
         $merchantCredential = password_hash($cnpj."".$merchantToken, PASSWORD_BCRYPT, [
             'cost' => 12,
@@ -17,8 +18,8 @@ class Login {
 
         $url = $url."merchant/auth";
 
-        echo "Login::requestToken = Merchant Credential {$merchantCredential}\n";
-        echo "Login::requestToken = Url de requisição {$url}\n";
+        Utils::log("Login::requestToken = Merchant Credential {$merchantCredential}\n");
+        Utils::log("Login::requestToken = Url de requisição {$url}\n");
 
         curl_setopt_array($ch, [
             CURLOPT_POST => 1,

@@ -3,19 +3,20 @@
 namespace AditumPayments\ApiSDK\Controller;
 
 use AditumPayments\ApiSDK\Configuration;
+use AditumPayments\ApiSDK\Helper\Utils;
 
 class Boleto {
 
     public function charge($data) {
-        echo "\n\n => Boleto::charge = Iniciando...\n";
+        Utils::log("\n\n => Boleto::charge = Iniciando...\n");
 
         $ch = curl_init();
 
         $url = Configuration::getUrl()."charge/boleto";
 
-        print_r("Boleto::charge = Url de requisição {$url}\n");
-        print_r("Boleto::charge = Body da requisição:\n");
-        print_r($data->toJson());
+        Utils::log("Boleto::charge = Url de requisição {$url}\n");
+        Utils::log("Boleto::charge = Body da requisição:\n");
+        Utils::log($data->toJson());
 
         curl_setopt_array($ch, [
             CURLOPT_POST => 1,

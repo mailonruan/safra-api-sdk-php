@@ -10,21 +10,21 @@ class PreAuthorization {
     public function charge($data) {
         $brandName = Utils::getBrandCardBin($data->transactions->card->getCardNumber());
         if ($brandName == NULL) {
-            echo "PreAuthorization::toJson = Falha ao buscar nome da bandeira do cartão\n";
+            Utils::log("PreAuthorization::toJson = Falha ao buscar nome da bandeira do cartão\n");
             return NULL;
         } else {
             $data->transactions->card->setBrandName($brandName);
         }
         
-        echo "\n\n => PreAuthorization::charge = Iniciando...\n";
+        Utils::log("\n\n => PreAuthorization::charge = Iniciando...\n");
 
         $ch = curl_init();
 
         $url = Configuration::getUrl()."charge/preauthorization";
 
-        print_r("PreAuthorization::charge = Url de requisição {$url}\n");
-        print_r("PreAuthorization::charge = Body da requisição:\n");
-        print_r($data->toJson());
+        Utils::log("PreAuthorization::charge = Url de requisição {$url}\n");
+        Utils::log("PreAuthorization::charge = Body da requisição:\n");
+        Utils::log($data->toJson());
 
         curl_setopt_array($ch, [
             CURLOPT_POST => 1,

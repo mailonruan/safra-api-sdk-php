@@ -13,11 +13,14 @@ abstract class Configuration {
 
     private static $token = "";
 
+    private static $log = false;
+
     public const PROD_URL = "https://payment.aditum.com.br/v2/";
     public const DEV_URL  = "https://payment-dev.aditum.com.br/v2/";
 
     final public static function initialize() {
         self::$url = self::PROD_URL;
+        self::$log = false;
     }
 
     final public static function login() {
@@ -61,7 +64,11 @@ abstract class Configuration {
         return self::$token;
     }
 
-    final public static function boleto() {
-        return self::$boleto;
+    final public static function setLog($status) {
+        self::$log = $status;
+    }
+
+    final public static function getLog() {
+        return self::$log;
     }
 }

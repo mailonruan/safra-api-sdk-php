@@ -10,21 +10,21 @@ class Authorization {
     public function charge($data) {
         $brandName = Utils::getBrandCardBin($data->transactions->card->getCardNumber());
         if ($brandName == NULL) {
-            echo "Authorization::toJson = Falha ao buscar nome da bandeira do cartão\n";
+            Utils::log("Authorization::toJson = Falha ao buscar nome da bandeira do cartão\n");
             return NULL;
         } else {
             $data->transactions->card->setBrandName($brandName);
         }
         
-        echo "\n\n => Authorization::charge = Iniciando...\n";
+        Utils::log("\n\n => Authorization::charge = Iniciando...\n");
 
         $ch = curl_init();
 
         $url = Configuration::getUrl()."charge/authorization";
 
-        print_r("Authorization::charge = Url de requisição {$url}\n");
-        print_r("Authorization::charge = Body da requisição:\n");
-        print_r($data->toJson());
+        Utils::log("Authorization::charge = Url de requisição {$url}\n");
+        Utils::log("Authorization::charge = Body da requisição:\n");
+        Utils::log($data->toJson());
 
         curl_setopt_array($ch, [
             CURLOPT_POST => 1,

@@ -6,6 +6,7 @@ use AditumPayments\ApiSDK\Configuration;
 use AditumPayments\ApiSDK\Controller\Authorization;
 use AditumPayments\ApiSDK\Controller\Boleto;
 use AditumPayments\ApiSDK\Controller\PreAuthorization;
+use AditumPayments\ApiSDK\Helper\Utils;
 
 class Gateway {
 
@@ -21,23 +22,23 @@ class Gateway {
                 $preAuthorization = new PreAuthorization;
                 return $preAuthorization->charge($data);
             case "Undefined":
-                echo "Payment::charge = Defina o tipo de transação\n";
+                Utils::log("Payment::charge = Defina o tipo de transação\n");
                 return NULL;
                 break;
             default:
-                echo "Payment::charge = Undefined charge type\n";
+            Utils::log("Payment::charge = Undefined charge type\n");
                 return NULL;
         }
     }
 
     public function billingInformation($id) {
-        echo "\n\n => Gateway::billingInformation = Iniciando...\n";
+        Utils::log("\n\n => Gateway::billingInformation = Iniciando...\n");
 
         $ch = curl_init();
 
         $url = Configuration::getUrl()."charge/{$id}";
 
-        print_r("Gateway::billingInformation = Url de requisição {$url}\n");
+        Utils::log("Gateway::billingInformation = Url de requisição {$url}\n");
 
         curl_setopt_array($ch, [
             CURLOPT_URL => $url,
