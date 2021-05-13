@@ -6,19 +6,9 @@ class PreAuthorization extends Charge {
 
     public const CHARGE_TYPE = "PreAuthorization";
 
-    private $sessionId = "";
-
     public function __construct() {
         $this->customer = new Customer;
         $this->transactions = new Transactions;
-    }
-
-    public function setSessionId($sessionId) {
-        $this->sessionId = $sessionId;
-    }
-
-    public function getSessionId() {
-        return $this->sessionId;
     }
 
     public function toString() {
@@ -26,6 +16,10 @@ class PreAuthorization extends Charge {
                 "customer" => array(
                     "name" => $this->customer->getName(),
                     "email" => $this->customer->getEmail(),
+                    "documentType" => $this->customer->getDocumentType(),
+                    "document" =>  $this->customer->getDocument(),
+                    "documentType" => $this->customer->getDocumentType(),
+                    "document" =>  $this->customer->getDocument(),
                     "address" => array(
                         "street" => $this->customer->address->getStreet(),
                         "number" => $this->customer->address->getNumber(),
@@ -51,7 +45,17 @@ class PreAuthorization extends Charge {
                             "cardholderName" => $this->transactions->card->getCardholderName(),
                             "expirationMonth" => $this->transactions->card->getExpirationMonth(),
                             "expirationYear" => $this->transactions->card->getExpirationYear(),
-                            "brandName" => $this->transactions->card->getBrandName()
+                            "brandName" => $this->transactions->card->getBrandName(),
+                            "billingAddress" => array(
+                                "street" => $this->transactions->card->billingAddress->getStreet(),
+                                "number" => $this->transactions->card->billingAddress->getNumber(),
+                                "neighborhood" => $this->transactions->card->billingAddress->getNeighborhood(),
+                                "city" => $this->transactions->card->billingAddress->getCity(),
+                                "state" => $this->transactions->card->billingAddress->getState(),
+                                "country" => $this->transactions->card->billingAddress->getCountry(),
+                                "zipcode" => $this->transactions->card->billingAddress->getZipcode(),
+                                "complement" => $this->transactions->card->billingAddress->getComplement()
+                            )
                         ),
                         "installmentNumber" => $this->transactions->getInstallmentNumber(),
                         "acquirer" => $this->transactions->getAcquirer(),

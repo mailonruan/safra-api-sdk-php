@@ -13,6 +13,13 @@ class Card {
     private $expirationMonth = "";
     private $expirationYear = "";
 
+    public $address = NULL;
+    public $billingAddress = NULL;
+
+    public function __construct() {
+        $this->address = new Address;
+        $this->billingAddress = new Address;
+    }
 
     public function setBrandName($brandName) {
         $this->brandName = $brandName;

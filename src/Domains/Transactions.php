@@ -6,7 +6,7 @@ use AditumPayments\ApiSDK\Enum\AcquirerCode;
 
 class Transactions {
 
-    private $acquirer = NULL;
+    private $acquirer = "";
     private $amount = "";
     private $paymentType = "";
     private $installmentNumber = 1;

@@ -12,12 +12,14 @@ AditumPayments\ApiSDK\Configuration::login();
 $gateway = new AditumPayments\ApiSDK\Gateway;
 $preAuthorization = new AditumPayments\ApiSDK\Domains\PreAuthorization;
 
-
+$preAuthorization->setId("");
 $preAuthorization->setSessionId("");
 
 // Customer
 $preAuthorization->customer->setName("ceres");
 $preAuthorization->customer->setEmail("ceres@aditum.co");
+$authorization->customer->setDocumentType(AditumPayments\ApiSDK\Enum\DocumentType::CPF);
+$authorization->customer->setDocument("14533859755");
 
 // Customer->address
 $preAuthorization->customer->address->setStreet("Avenida Salvador");
@@ -39,14 +41,26 @@ $preAuthorization->customer->phone->setType(AditumPayments\ApiSDK\Enum\PhoneType
 $preAuthorization->transactions->setAmount(100);
 $preAuthorization->transactions->setPaymentType(AditumPayments\ApiSDK\Enum\PaymentType::CREDIT);
 $preAuthorization->transactions->setInstallmentNumber(2); // Só pode ser maior que 1 se o tipo de transação for crédito.
-$preAuthorization->transactions->getAcquirer(AditumPayments\ApiSDK\Enum\AcquirerCode::SIMULADOR); // Valor padrão AditumPayments\ApiSDK\AcquirerCode::ADITUM_ECOM
+// $preAuthorization->transactions->getAcquirer(AditumPayments\ApiSDK\Enum\AcquirerCode::SIMULADOR); // Valor padrão AditumPayments\ApiSDK\AcquirerCode::ADITUM_ECOM
 
 // Transactions->card
-$preAuthorization->transactions->card->setCardNumber("5463373320417272");
+$authorization->transactions->card->setCardNumber("4444333322221111"); // Aprovado
+// $preAuthorization->transactions->card->setCardNumber("4222222222222224"); // Pendente e aprovar posteriormente
+// $preAuthorization->transactions->card->setCardNumber("4222222222222225"); // Pendente e negar posteriormente
+// $preAuthorization->transactions->card->setCardNumber("4444333322221112"); // Negar
+
 $preAuthorization->transactions->card->setCVV("879");
 $preAuthorization->transactions->card->setCardholderName("CERES ROHANA");
 $preAuthorization->transactions->card->setExpirationMonth(10);
 $preAuthorization->transactions->card->setExpirationYear(2022);
+$preAuthorization->transactions->card->billingAddress->setStreet("Avenida Salvador");
+$preAuthorization->transactions->card->billingAddress->setNumber("5401");
+$preAuthorization->transactions->card->billingAddress->setNeighborhood("Recreio dos bandeirantes");
+$preAuthorization->transactions->card->billingAddress->setCity("Rio de janeiro");
+$preAuthorization->transactions->card->billingAddress->setState("RJ");
+$preAuthorization->transactions->card->billingAddress->setCountry("BR");
+$preAuthorization->transactions->card->billingAddress->setZipcode("2279714");
+$preAuthorization->transactions->card->billingAddress->setComplement("");
 
 $res = $gateway->charge($preAuthorization);
 

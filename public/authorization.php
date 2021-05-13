@@ -12,9 +12,14 @@ AditumPayments\ApiSDK\Configuration::login();
 $gateway = new AditumPayments\ApiSDK\Gateway;
 $authorization = new AditumPayments\ApiSDK\Domains\Authorization;
 
+$authorization->setId("");
+$authorization->setSessionId("");
+
 // Customer
 $authorization->customer->setName("ceres");
 $authorization->customer->setEmail("ceres@aditum.co");
+$authorization->customer->setDocumentType(AditumPayments\ApiSDK\Enum\DocumentType::CPF);
+$authorization->customer->setDocument("14533859755");
 
 // Customer->address
 $authorization->customer->address->setStreet("Avenida Salvador");
@@ -36,14 +41,26 @@ $authorization->customer->phone->setType(AditumPayments\ApiSDK\Enum\PhoneType::M
 $authorization->transactions->setAmount(100);
 $authorization->transactions->setPaymentType(AditumPayments\ApiSDK\Enum\PaymentType::CREDIT);
 $authorization->transactions->setInstallmentNumber(2); // Só pode ser maior que 1 se o tipo de transação for crédito.
-$authorization->transactions->getAcquirer(AditumPayments\ApiSDK\Enum\AcquirerCode::SIMULADOR); // Valor padrão AditumPayments\ApiSDK\AcquirerCode::ADITUM_ECOM
+// $authorization->transactions->getAcquirer(AditumPayments\ApiSDK\Enum\AcquirerCode::SIMULADOR); // Valor padrão AditumPayments\ApiSDK\AcquirerCode::ADITUM_ECOM
 
 // Transactions->card
-$authorization->transactions->card->setCardNumber("5463373320417272");
+$authorization->transactions->card->setCardNumber("4444333322221111"); // Aprovado
+// $authorization->transactions->card->setCardNumber("4222222222222224"); // Pendente e aprovar posteriormente
+// $authorization->transactions->card->setCardNumber("4222222222222225"); // Pendente e negar posteriormente
+// $authorization->transactions->card->setCardNumber("4444333322221112"); // Negar
+
 $authorization->transactions->card->setCVV("879");
 $authorization->transactions->card->setCardholderName("CERES ROHANA");
 $authorization->transactions->card->setExpirationMonth(10);
 $authorization->transactions->card->setExpirationYear(2022);
+$authorization->transactions->card->billingAddress->setStreet("Avenida Salvador");
+$authorization->transactions->card->billingAddress->setNumber("5401");
+$authorization->transactions->card->billingAddress->setNeighborhood("Recreio dos bandeirantes");
+$authorization->transactions->card->billingAddress->setCity("Rio de janeiro");
+$authorization->transactions->card->billingAddress->setState("RJ");
+$authorization->transactions->card->billingAddress->setCountry("BR");
+$authorization->transactions->card->billingAddress->setZipcode("2279714");
+$authorization->transactions->card->billingAddress->setComplement("");
 
 $res = $gateway->charge($authorization);
 
@@ -52,10 +69,11 @@ print_r(json_encode($res));
 
 if (isset($res["status"])) {
     if ($res["status"] == AditumPayments\ApiSDK\Enum\ChargeStatus::AUTHORIZED) 
-        echo "\n\nAprovado!\n";
+        echo "\n\nAprovado!";
 } else {
     if ($res != NULL)
         echo "httStatus: ".$res["httpStatus"]
         ."\n httpMsg: ".$res["httpMsg"]
         ."\n";
 }
+echo "\n";

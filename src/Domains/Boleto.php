@@ -60,7 +60,8 @@ class Boleto extends Charge {
                     ),
                 ],
                 "source" => 1,
-                "deadline" => $this->getDeadline()
+                "deadline" => $this->getDeadline(),
+                "sessionId" => $this->getSessionId()
             ),
         );
     }
