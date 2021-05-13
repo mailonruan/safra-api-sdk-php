@@ -7,15 +7,15 @@ abstract class Charge {
     public $customer = NULL;
     public $transactions = NULL;
 
-    private $id = "";
+    private $merchantChargeId = "";
     private $sessionId = "";
 
-    public function setId($id) {
-        $this->id = $id;
+    public function setMerchantChargeId($merchantChargeId) {
+        $this->merchantChargeId = $merchantChargeId;
     }
 
-    public function getId() {
-        return $this->id;
+    public function getMerchantChargeId() {
+        return $this->merchantChargeId;
     }
 
     public function setSessionId($sessionId) {

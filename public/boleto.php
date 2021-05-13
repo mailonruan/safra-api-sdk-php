@@ -12,6 +12,8 @@ AditumPayments\ApiSDK\Configuration::login();
 $gateway = new AditumPayments\ApiSDK\Gateway;
 $boleto = new AditumPayments\ApiSDK\Domains\Boleto;
 
+$boleto->setMerchantChargeId("");
+$boleto->setSessionId("");
 $boleto->setDeadline("2");
 
 // Customer

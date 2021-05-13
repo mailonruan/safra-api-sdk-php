@@ -63,7 +63,8 @@ class Authorization extends Charge {
                 ],
                 "source" => 1,
                 "capture" => false,
-                "sessionId" => self::getSessionId()
+                "sessionId" => self::getSessionId(),
+                "merchantChargeId" => self::getMerchantChargeId()
             ));
     }
 

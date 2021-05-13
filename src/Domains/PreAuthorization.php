@@ -65,7 +65,8 @@ class PreAuthorization extends Charge {
                 ],
                 "source" => 1,
                 "capture" => false,
-                "sessionId" => $this->getSessionId()
+                "sessionId" => $this->getSessionId(),
+                "merchantChargeId" => self::getMerchantChargeId()
             ));
     }
 

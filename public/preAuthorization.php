@@ -12,7 +12,7 @@ AditumPayments\ApiSDK\Configuration::login();
 $gateway = new AditumPayments\ApiSDK\Gateway;
 $preAuthorization = new AditumPayments\ApiSDK\Domains\PreAuthorization;
 
-$preAuthorization->setId("");
+$preAuthorization->setMerchantChargeId("");
 $preAuthorization->setSessionId("");
 
 // Customer
