@@ -14,6 +14,7 @@ $boleto = new AditumPayments\ApiSDK\Domains\Boleto;
 
 $boleto->setMerchantChargeId("");
 $boleto->setSessionId("");
+
 $boleto->setDeadline("2");
 
 // Customer
