@@ -18,8 +18,8 @@ $preAuthorization->setSessionId("");
 // Customer
 $preAuthorization->customer->setName("ceres");
 $preAuthorization->customer->setEmail("ceres@aditum.co");
-$authorization->customer->setDocumentType(AditumPayments\ApiSDK\Enum\DocumentType::CPF);
-$authorization->customer->setDocument("14533859755");
+$preAuthorization->customer->setDocumentType(AditumPayments\ApiSDK\Enum\DocumentType::CPF);
+$preAuthorization->customer->setDocument("14533859755");
 
 // Customer->address
 $preAuthorization->customer->address->setStreet("Avenida Salvador");

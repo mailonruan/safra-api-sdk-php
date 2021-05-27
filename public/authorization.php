@@ -43,7 +43,7 @@ $authorization->transactions->setPaymentType(AditumPayments\ApiSDK\Enum\PaymentT
 $authorization->transactions->setInstallmentNumber(2); // Só pode ser maior que 1 se o tipo de transação for crédito.
 // $authorization->transactions->getAcquirer(AditumPayments\ApiSDK\Enum\AcquirerCode::SIMULADOR); // Valor padrão AditumPayments\ApiSDK\AcquirerCode::ADITUM_ECOM
 
-// Transactions->card
+
 $authorization->transactions->card->setCardNumber("4444333322221111"); // Aprovado
 // $authorization->transactions->card->setCardNumber("4222222222222224"); // Pendente e aprovar posteriormente
 // $authorization->transactions->card->setCardNumber("4222222222222225"); // Pendente e negar posteriormente
