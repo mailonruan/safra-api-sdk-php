@@ -4,8 +4,8 @@ require  '../vendor/autoload.php';
 
 AditumPayments\ApiSDK\Configuration::initialize();
 AditumPayments\ApiSDK\Configuration::setUrl(AditumPayments\ApiSDK\Configuration::DEV_URL);
-AditumPayments\ApiSDK\Configuration::setCnpj("83032272000109");
-AditumPayments\ApiSDK\Configuration::setMerchantToken("mk_P1kT7Rngif1Xuylw0z96k3");
+AditumPayments\ApiSDK\Configuration::setCnpj("31195875000110");
+AditumPayments\ApiSDK\Configuration::setMerchantToken("mk_w8qeUpSxZlsdGAP67egxse");
 AditumPayments\ApiSDK\Configuration::setlog(true);
 AditumPayments\ApiSDK\Configuration::login();
 
@@ -43,7 +43,6 @@ $authorization->transactions->setPaymentType(AditumPayments\ApiSDK\Enum\PaymentT
 $authorization->transactions->setInstallmentNumber(2); // Só pode ser maior que 1 se o tipo de transação for crédito.
 // $authorization->transactions->getAcquirer(AditumPayments\ApiSDK\Enum\AcquirerCode::SIMULADOR); // Valor padrão AditumPayments\ApiSDK\AcquirerCode::ADITUM_ECOM
 
-
 $authorization->transactions->card->setCardNumber("4444333322221111"); // Aprovado
 // $authorization->transactions->card->setCardNumber("4222222222222224"); // Pendente e aprovar posteriormente
 // $authorization->transactions->card->setCardNumber("4222222222222225"); // Pendente e negar posteriormente
@@ -72,8 +71,8 @@ if (isset($res["status"])) {
         echo "\n\nAprovado!";
 } else {
     if ($res != NULL)
-        echo "httStatus: ".$res["httpStatus"]
-        ."\n httpMsg: ".$res["httpMsg"]
-        ."\n";
+        echo "\nhttStatus: ".$res["httpStatus"]
+            ."\nhttpMsg: ".$res["httpMsg"]
+            ."\n";
 }
 echo "\n";

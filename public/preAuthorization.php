@@ -72,7 +72,7 @@ if (isset($res["status"])) {
         echo "\n\nPRE_AUTHORIZED!\n";
 } else {
     if ($res != NULL)
-        echo "httStatus: ".$res["httpStatus"]
-        ."\n httpMsg: ".$res["httpMsg"]
-        ."\n";
+        echo "\nhttStatus: ".$res["httpStatus"]
+            ."\nhttpMsg: ".$res["httpMsg"]
+            ."\n";
 }

@@ -74,7 +74,7 @@ print_r(json_encode($res));
 if (isset($res["status"])) {
     echo "\n\n".$res["status"]."\n";
 } else {
-    echo "httStatus: ".$res["httpStatus"]
-        ."\n httpMsg: ".$res["httpMsg"]
+    echo "\nhttStatus: ".$res["httpStatus"]
+        ."\nhttpMsg: ".$res["httpMsg"]
         ."\n";
 }

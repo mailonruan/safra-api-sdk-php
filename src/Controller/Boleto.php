@@ -53,7 +53,7 @@ class Boleto {
         $responseJson = json_decode($response);
 
         if ($responseJson->success != true) {
-            $arrayError = array("code" => '-1', "httpMsg" => $responseJson->errors);
+            $arrayError = array("httpStatus" => '-1', "httpMsg" => $responseJson->errors);
             return $arrayError;
         }
 

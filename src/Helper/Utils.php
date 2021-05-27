@@ -10,8 +10,8 @@ abstract class Utils {
 
         $bin = substr($cardNumber, 0, 4);
 
-        
-        $url = Configuration::getURL() == Configuration::PROD_URL? "https://portal-api.aditum.com.br/v1/": "https://portal-dev.aditum.com.br/v1/"; // @TODO: necessário remover quando estiver no novo endpoint
+        // @TODO: necessário remover quando estiver no novo endpoint        
+        $url = Configuration::getURL() == Configuration::PROD_URL? "https://portal-api.aditum.com.br/v1/": "https://portal-dev.aditum.com.br/v1/"; 
         $urlRequest = "{$url}card/bin/brand/{$bin}";
 
         self::log("Utils::getBrandCardBin = Url de requisição {$urlRequest}\n");

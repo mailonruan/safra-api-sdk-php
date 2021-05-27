@@ -10,8 +10,8 @@ class PreAuthorization {
     public function charge($data) {
         $brandName = Utils::getBrandCardBin($data->transactions->card->getCardNumber());
         if ($brandName == NULL) {
-            Utils::log("PreAuthorization::toJson = Falha ao buscar nome da bandeira do cartão\n");
-            return NULL;
+            $arrayError = array("httpStatus" => '400', "httpMsg" => "Falha ao buscar nome da bandeira do cartão");
+            return $arrayError;
         } else {
             $data->transactions->card->setBrandName($brandName);
         }
@@ -61,7 +61,7 @@ class PreAuthorization {
         $responseJson = json_decode($response);
 
         if ($responseJson->success != true) {
-            $arrayError = array("code" => '-1', "httpMsg" => $responseJson->errors);
+            $arrayError = array("httpStatus" => '-1', "httpMsg" => $responseJson->errors);
             return $arrayError;
         }
 
