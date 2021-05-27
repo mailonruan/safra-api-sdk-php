@@ -17,6 +17,7 @@ class Authorization {
         }
         
         Utils::log("\n\n => Authorization::charge = Iniciando...\n");
+        Utils::log("Authorization::charge = URL ".Configuration::getURL()."\n");
 
         $ch = curl_init();
 

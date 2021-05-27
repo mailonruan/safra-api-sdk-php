@@ -9,6 +9,7 @@ class Boleto {
 
     public function charge($data) {
         Utils::log("\n\n => Boleto::charge = Iniciando...\n");
+        Utils::log("Boleto::charge = URL ".Configuration::getURL()."\n");
 
         $ch = curl_init();
 

@@ -17,6 +17,7 @@ class PreAuthorization {
         }
         
         Utils::log("\n\n => PreAuthorization::charge = Iniciando...\n");
+        Utils::log("PreAuthorization::charge = URL ".Configuration::getURL()."\n");
 
         $ch = curl_init();
 

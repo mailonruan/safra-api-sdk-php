@@ -9,6 +9,7 @@ class Login {
 
     public function requestToken($cnpj, $merchantToken, $url) {
         Utils::log("\n\n => Login::requestToken = Iniciando...\n");
+        Utils::log("Login::requestToken = URL ".Configuration::getURL()."\n");
 
         $merchantCredential = password_hash($cnpj."".$merchantToken, PASSWORD_BCRYPT, [
             'cost' => 12,
@@ -58,6 +59,7 @@ class Login {
             return $arrayError;
         }
 
+        Utils::log("Login::requestToken = token {$responseJson->accessToken}\n");
         return array("token" => $responseJson->accessToken, "refreshToken" => $responseJson->refreshToken);
     }
 
