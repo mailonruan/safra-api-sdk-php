@@ -65,6 +65,6 @@ if (isset($res["status"])) {
 } else {
     if ($res != NULL)
         echo "\nhttStatus: ".$res["httpStatus"]
-            ."\n httpMsg: ".$res["httpMsg"]
+            ."\nhttpMsg: ".$res["httpMsg"]
             ."\n";
 }

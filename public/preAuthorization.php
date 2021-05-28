@@ -16,8 +16,8 @@ $preAuthorization->setMerchantChargeId("");
 $preAuthorization->setSessionId("");
 
 // Customer
-$preAuthorization->customer->setName("ceres");
-$preAuthorization->customer->setEmail("ceres@aditum.co");
+$preAuthorization->customer->setName("fulano");
+$preAuthorization->customer->setEmail("fulano@aditum.co");
 $preAuthorization->customer->setDocumentType(AditumPayments\ApiSDK\Enum\DocumentType::CPF);
 $preAuthorization->customer->setDocument("14533859755");
 

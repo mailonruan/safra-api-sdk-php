@@ -9,12 +9,12 @@ class Authorization {
 
     public function charge($data) {
         $brandName = Utils::getBrandCardBin($data->transactions->card->getCardNumber());
-        if ($brandName == NULL) {
+        if ($brandName["status"] == false) {
             Utils::log("\nAuthorization::toJson = Falha ao buscar nome da bandeira do cartão\n");
-            $arrayError = array("httpStatus" => '400', "httpMsg" => "Falha ao buscar nome da bandeira do cartão");
+            $arrayError = array("httpStatus" => $brandName["httpStatus"], "httpMsg" => $brandName["httpMsg"]);
             return $arrayError;
         } else {
-            $data->transactions->card->setBrandName($brandName);
+            $data->transactions->card->setBrandName($brandName["brand"]);
         }
         
         Utils::log("\n\n => Authorization::charge = Iniciando...\n");

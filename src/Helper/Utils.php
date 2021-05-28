@@ -37,8 +37,17 @@ abstract class Utils {
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if($errMsg || $errCode || empty($response) ||  (($httpCode != 200) && ($httpCode != 201))) {
+            curl_close($ch);
+
             self::log("Utils::getBrandCardBin = Falha ao buscar nome da bandeira do cartão, httpCode {$httpCode}\n");
-            return NULL;
+            $arrayError = array(
+                "status" => false,
+                "httpStatus" => $httpCode, 
+                "httpMsg" => $response, 
+                "code" => $errCode, 
+                "msg" => $errMsg);
+            
+            return $arrayError;
         }
 
         curl_close($ch);
@@ -47,12 +56,13 @@ abstract class Utils {
 
         if ($responseJson->success != true) {
             self::log("Utils::getBrandCardBin = Falha ao buscar nome da bandeira do cartão, response {$response}\n");
-            return NULL;
+            $arrayError = array("status" => false, "httpStatus" => '-1', "httpMsg" => $responseJson->errors);
+            return $arrayError;
         }
 
         self::log("Utils::getBrandCardBin = Sucesso ao buscar bandeira do cartão {$responseJson->cardBrand}\n");
 
-        return $responseJson->cardBrand;
+        return array("status" => true, "brand" => $responseJson->cardBrand);
     }
 
     public static function log($data) {
