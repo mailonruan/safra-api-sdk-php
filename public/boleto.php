@@ -50,9 +50,9 @@ $boleto->transactions->fine->setAmount(300);
 $boleto->transactions->fine->setInterest(10);
 
 // Transactions->discount (opcional)
-$boleto->transactions->discount->setType(AditumPayments\ApiSDK\Enum\DiscountType::FIXED);
-$boleto->transactions->discount->setAmount(200);
-$boleto->transactions->discount->setDeadline("1");
+// $boleto->transactions->discount->setType(AditumPayments\ApiSDK\Enum\DiscountType::FIXED);
+// $boleto->transactions->discount->setAmount(200);
+// $boleto->transactions->discount->setDeadline("1");
 
 $res = $gateway->charge($boleto);
 

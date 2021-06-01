@@ -6,7 +6,6 @@ use AditumPayments\ApiSDK\Enum\AcquirerCode;
 
 class Transactions {
 
-    private $acquirer = "";
     private $amount = "";
     private $paymentType = "";
     private $installmentNumber = 1;
@@ -20,14 +19,6 @@ class Transactions {
         $this->card = new Card;
         $this->fine = new Fine;
         $this->discount = new Discount;
-    }
-
-    public function setAcquirer($acquirer) {
-        $this->acquirer = $acquirer;
-    }
-
-    public function getAcquirer() {
-        return ($this->acquirer)? $this->acquirer : AcquirerCode::ADITUM_ECOM;
     }
 
     public function setAmount($amount) {
