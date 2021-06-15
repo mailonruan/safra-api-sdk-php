@@ -48,6 +48,7 @@ $preAuthorization->transactions->card->setCardNumber("4444333322221111"); // Apr
 // $preAuthorization->transactions->card->setCardNumber("4222222222222225"); // Pendente e negar posteriormente
 // $preAuthorization->transactions->card->setCardNumber("4444333322221112"); // Negar
 
+$authorization->transactions->card->setCardholderDocument("14533859755");
 $preAuthorization->transactions->card->setCVV("879");
 $preAuthorization->transactions->card->setCardholderName("CERES ROHANA");
 $preAuthorization->transactions->card->setExpirationMonth(10);

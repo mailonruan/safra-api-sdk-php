@@ -40,12 +40,14 @@ $authorization->customer->phone->setType(AditumPayments\ApiSDK\Enum\PhoneType::M
 // Transactions
 $authorization->transactions->setAmount(100);
 $authorization->transactions->setPaymentType(AditumPayments\ApiSDK\Enum\PaymentType::CREDIT);
-$authorization->transactions->setInstallmentNumber(2); // Só pode ser maior que 1 se o tipo de transação for crédito.
- $authorization->transactions->card->setCardNumber("4444333322221111"); // Aprovado
+$authorization->transactions->setInstallmentNumber(1); // Só pode ser maior que 1 se o tipo de transação for crédito.
+
+$authorization->transactions->card->setCardNumber("4444333322221111"); // Aprovado
 // $authorization->transactions->card->setCardNumber("4222222222222224"); // Pendente e aprovar posteriormente
 // $authorization->transactions->card->setCardNumber("4222222222222225"); // Pendente e negar posteriormente
 // $authorization->transactions->card->setCardNumber("4444333322221112"); // Negar
 
+$authorization->transactions->card->setCardholderDocument("14533859755");
 $authorization->transactions->card->setCVV("879");
 $authorization->transactions->card->setCardholderName("CERES ROHANA");
 $authorization->transactions->card->setExpirationMonth(10);
