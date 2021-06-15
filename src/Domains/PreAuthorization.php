@@ -46,6 +46,7 @@ class PreAuthorization extends Charge {
                             "expirationMonth" => $this->transactions->card->getExpirationMonth(),
                             "expirationYear" => $this->transactions->card->getExpirationYear(),
                             "brandName" => $this->transactions->card->getBrandName(),
+                            "cardholderDocument" => $this->transactions->card->getCardholderDocument(),
                             "billingAddress" => array(
                                 "street" => $this->transactions->card->billingAddress->getStreet(),
                                 "number" => $this->transactions->card->billingAddress->getNumber(),

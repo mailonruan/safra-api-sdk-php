@@ -12,6 +12,7 @@ class Card {
     private $cardholderName = "";
     private $expirationMonth = "";
     private $expirationYear = "";
+    private $cardholderDocument = "";
 
     public $address = NULL;
     public $billingAddress = NULL;
@@ -67,5 +68,13 @@ class Card {
 
     public function getExpirationYear() {
         return $this->expirationYear;
+    }
+
+    public function setCardholderDocument($cardholderDocument) {
+        $this->cardholderDocument = $cardholderDocument;
+    }
+
+    public function getCardholderDocument() {
+        return $this->cardholderDocument;
     }
 }
