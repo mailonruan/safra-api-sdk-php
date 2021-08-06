@@ -10,6 +10,7 @@ class Transactions {
     private $paymentType = "";
     private $installmentNumber = 1;
     private $instructions = "";
+    private $installmentType = "";
     
     public $card = NULL;
     public $fine = NULL;
@@ -51,5 +52,13 @@ class Transactions {
 
     public function getInstructions() {
         return $this->instructions;
+    }
+
+    public function setInstallmentType($installmentType) {
+        $this->installmentType = $installmentType;
+    }
+
+    public function getInstallmentType() {
+        return $this->installmentType;
     }
 }

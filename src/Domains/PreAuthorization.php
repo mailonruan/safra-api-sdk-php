@@ -60,7 +60,8 @@ class PreAuthorization extends Charge {
                         ),
                         "installmentNumber" => $this->transactions->getInstallmentNumber(),
                         "paymentType" => $this->transactions->getPaymentType(),
-                        "amount" => $this->transactions->getAmount()
+                        "amount" => $this->transactions->getAmount(),
+                        "installmentType" => $this->transactions->getInstallmentType()
                     ),
                 ],
                 "source" => 1,
