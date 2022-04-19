@@ -15,6 +15,11 @@ $preAuthorization = new AditumPayments\ApiSDK\Domains\PreAuthorization;
 $preAuthorization->setMerchantChargeId("");
 $preAuthorization->setSessionId("");
 
+// Products = Nome, SKU, Valor, Quantidade
+$preAuthorization->products->add("Jackson 2", "32424242", 1001, 1);
+$preAuthorization->products->add("Jackson 3", "32424242", 1002, 2);
+$preAuthorization->products->add("Jackson 4", "32424242", 1003, 3);
+
 // Customer
 $preAuthorization->customer->setName("fulano");
 $preAuthorization->customer->setEmail("fulano@aditum.co");
