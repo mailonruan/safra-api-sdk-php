@@ -2,7 +2,8 @@
 
 namespace AditumPayments\ApiSDK\Domains;
 
-class Address {
+class Address
+{
     private $street = "";
     private $number = "";
     private $neighborhood = "";
@@ -12,67 +13,102 @@ class Address {
     private $zipcode = "";
     private $complement = "";
 
-    public function setStreet($street) {
+    public function setStreet($street)
+    {
         $this->street = $street;
     }
 
-    public function getStreet() {
+    public function getStreet()
+    {
         return $this->street;
     }
 
-    public function setNumber($number) {
+    public function setNumber($number)
+    {
         $this->number = $number;
     }
 
-    public function getNumber() {
+    public function getNumber()
+    {
         return $this->number;
     }
 
-    public function setNeighborhood($neighborhood) {
+    public function setNeighborhood($neighborhood)
+    {
         $this->neighborhood = $neighborhood;
     }
 
-    public function getNeighborhood() {
+    public function getNeighborhood()
+    {
         return $this->neighborhood;
     }
 
-    public function setCity($city) {
+    public function setCity($city)
+    {
         $this->city = $city;
     }
 
-    public function getCity() {
+    public function getCity()
+    {
         return $this->city;
     }
 
-    public function setState($state) {
+    public function setState($state)
+    {
         $this->state = $state;
     }
 
-    public function getState() {
+    public function getState()
+    {
         return $this->state;
     }
 
-    public function setCountry($country) {
+    public function setCountry($country)
+    {
         $this->country = $country;
     }
 
-    public function getCountry() {
+    public function getCountry()
+    {
         return $this->country;
     }
 
-    public function setZipcode($zipcode) {
+    public function setZipcode($zipcode)
+    {
         $this->zipcode = $zipcode;
     }
 
-    public function getZipcode() {
+    public function getZipcode()
+    {
         return $this->zipcode;
     }
 
-    public function setComplement($complement) {
+    public function setComplement($complement)
+    {
         $this->complement = $complement;
     }
 
-    public function getComplement() {
+    public function getComplement()
+    {
         return $this->complement;
+    }
+
+    public function toString()
+    {
+        return array(
+            "street" => $this->street,
+            "number" => $this->number,
+            "neighborhood" => $this->neighborhood,
+            "city" => $this->city,
+            "state" => $this->state,
+            "country" => $this->country,
+            "zipcode" => $this->zipcode,
+            "complement" => $this->complement
+        );
+    }
+
+    public function toJson()
+    {
+        return json_encode($this->toString());
     }
 }

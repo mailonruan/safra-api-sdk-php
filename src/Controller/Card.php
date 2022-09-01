@@ -5,20 +5,19 @@ namespace AditumPayments\ApiSDK\Controller;
 use AditumPayments\ApiSDK\Configuration;
 use AditumPayments\ApiSDK\Helper\Utils;
 
-class Authorization
+class Card
 {
-
-    public function charge($data)
+    public function create($data)
     {
-        Utils::log("\n\n => Authorization::charge = Iniciando...\n");
-        Utils::log("Authorization::charge = URL " . Configuration::getURL() . "\n");
+        Utils::log("\n\n => Card::create = Iniciando...\n");
+        Utils::log("Card::create = URL " . Configuration::getURL() . "\n");
 
         $ch = curl_init();
 
-        $url = Configuration::getUrl() . "charge/authorization";
+        $url = Configuration::getUrl() . "card";
 
-        Utils::log("Authorization::charge = Url de requisição {$url}\n");
-        Utils::log("Authorization::charge = Body da requisição:\n");
+        Utils::log("Card::create = Url de requisição {$url}\n");
+        Utils::log("Card::create = Body da requisição:\n");
         Utils::log($data->toJson());
 
         curl_setopt_array($ch, [
@@ -60,6 +59,6 @@ class Authorization
             return $arrayError;
         }
 
-        return array("status" => $responseJson->charge->chargeStatus, "charge" => $responseJson->charge);
+        return $responseJson->card;
     }
 }
