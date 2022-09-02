@@ -7,11 +7,23 @@ class Authorization extends Charge
 
     public const CHARGE_TYPE = "Authorization";
 
+    private $capture = true;
+
     public function __construct()
     {
         $this->products = new Products;
         $this->customer = new Customer;
         $this->transaction = new Transactions;
+    }
+
+    public function setCapture($capture = true)
+    {
+        $this->capture = $capture;
+    }
+
+    public function getCapture()
+    {
+        return $this->capture;
     }
 
     public function toString()
@@ -23,7 +35,8 @@ class Authorization extends Charge
                 $this->transaction->toString(),
             ],
             "source" => 1,
-            "capture" => true
+            "capture" => $this->capture,
+            "sessionId" => $this->getSessionId(),
         ));
     }
 
