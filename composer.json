@@ -1,13 +1,8 @@
 {
-    "name": "mailonruan/safra-api-sdk-php",
+    "name": "aditum-payments/aditum-api-sdk-php",
     "description": "Biblioteca de integração com a Aditum",
     "type": "library",
-    "keywords": [
-        "aditum",
-        "aditumpay",
-        "payment",
-        "acquirer"
-    ],
+	"keywords": ["aditum","aditumpay", "payment", "acquirer"],
     "authors": [
         {
             "name": "Nibble One",
@@ -21,7 +16,7 @@
         "ext-curl": "*",
         "lib-curl": "*",
         "lib-openssl": "*"
-    },
+      },
     "require-dev": {
         "phpunit/phpunit": "^9.5"
     },

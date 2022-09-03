@@ -49,7 +49,8 @@ class Authorization
                 "httpStatus" => $httpCode,
                 "httpMsg" => $response,
                 "code" => $errCode,
-                "msg" => $errMsg
+                "msg" => $errMsg,
+                "body" => $data->toJson()
             );
 
             return $arrayError;
