@@ -104,6 +104,6 @@ class Customer
 
     public function toJson()
     {
-        return json_encode($this->toString());
+        return json_encode(["customer" => $this->toString()]);
     }
 }
