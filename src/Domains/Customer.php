@@ -91,12 +91,14 @@ class Customer
     public function toString()
     {
         return array(
-            "name" => $this->name,
-            "email" => $this->email,
-            "documentType" => $this->documentType,
-            "document" =>  $this->document,
-            "address" => $this->address->toString(),
-            "phone" => $this->phone->toString()
+            "customer" => [
+                "name" => $this->name,
+                "email" => $this->email,
+                "documentType" => $this->documentType,
+                "document" =>  $this->document,
+                "address" => $this->address->toString(),
+                "phone" => $this->phone->toString()
+            ]
         );
     }
 
