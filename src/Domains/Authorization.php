@@ -28,7 +28,8 @@ class Authorization extends Charge
 
     public function toString()
     {
-        return array("charge" => array(
+        return ["charge" => [
+            "merchantChargeId" => $this->getMerchantChargeId(),
             "products" => $this->products->toString(),
             "customer" => $this->customer->toString(),
             "transactions" => [
@@ -37,7 +38,7 @@ class Authorization extends Charge
             "source" => 1,
             "capture" => $this->capture,
             "sessionId" => $this->getSessionId(),
-        ));
+        ]];
     }
 
     public function toJson()
