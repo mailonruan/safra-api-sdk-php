@@ -27,6 +27,7 @@ class Customer
         foreach ($customerData as $keyCustomer => $data) {
             if (in_array($keyCustomer, ['phone', 'address'])) {
                 foreach ($data as $keySub => $sub) {
+                    if (in_array($keyCustomer, ['addressType'])) continue;
                     $function = "set" . ucfirst($keySub);
                     $this->$keyCustomer->$function($sub);
                 }
